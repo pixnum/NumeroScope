@@ -3,46 +3,45 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NumPath - Numerology Calculator</title>
+  <title>Offline Numerology Calculator</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #111;
+      background-color: #121212;
       color: #eee;
+      margin: 0;
       padding: 20px;
-      max-width: 800px;
-      margin: auto;
     }
     input, select, button, textarea {
-      width: 100%;
-      margin: 10px 0;
       padding: 10px;
-      border: none;
+      margin: 5px 0;
+      width: 100%;
+      box-sizing: border-box;
       border-radius: 5px;
+      border: none;
+      font-size: 1em;
     }
-    textarea {
-      height: 300px;
+    .container {
+      max-width: 600px;
+      margin: auto;
     }
     h1, h2 {
-      color: #0ff;
-    }
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
       text-align: center;
     }
-    .grid div {
-      padding: 10px;
-      border: 1px solid #555;
-      border-radius: 5px;
+    .result {
+      background-color: #1e1e1e;
+      padding: 15px;
+      border-radius: 10px;
+      margin-top: 20px;
+      white-space: pre-wrap;
     }
   </style>
 </head>
 <body>
-  <h1> NumPath - Numerology Calculator</h1>
+<div class="container">
+  <h1>Offline Numerology Calculator</h1>
   <label for="name">Full Name:</label>
-  <input type="text" id="name" placeholder="Enter full name (A-Z, 0-9)">
+  <input type="text" id="name" placeholder="Enter your full name">
 
   <label for="dob">Date of Birth (optional):</label>
   <input type="date" id="dob">
@@ -53,109 +52,98 @@
     <option value="chaldean">Chaldean</option>
   </select>
 
-  <button onclick="analyze()">Analyze</button>
+  <button onclick="calculate()">Calculate</button>
+  <div id="report" class="result"></div>
+</div>
 
-  <h2>Analysis Report</h2>
-  <textarea id="report" readonly></textarea>
+<script>
+const numberMeanings = {
+  1: "Number 1 represents leadership, independence, and individuality. People with this number are known for their strong will and determination. They thrive when allowed to take initiative and lead. Their confidence can be contagious and inspiring. These individuals are goal-oriented and driven. They are natural-born pioneers. However, they must be mindful of arrogance or dominance. Balance is key to success. Number 1 people often create their path rather than follow others. Their self-motivation helps them overcome obstacles. With focus and patience, they achieve great things. Their journey is one of innovation, courage, and bold action toward personal fulfillment.",
+  2: "Number 2 represents harmony, sensitivity, and diplomacy. Individuals with this number are cooperative and peacemaking by nature. They seek balance and thrive in partnerships. Their ability to mediate conflicts makes them great team players. They are emotionally intuitive and caring. Often seen as the glue that holds people together, they value relationships. Their quiet strength lies in patience and tact. They prefer to support rather than lead. Their life path often involves nurturing others. They shine in roles that require empathy and subtle influence. Kindness and cooperation are their strengths. Number 2 embodies unity and emotional depth.",
+  3: "Number 3 symbolizes creativity, joy, and communication. These individuals are often expressive, social, and optimistic. They bring color and light into their surroundings. Their artistic flair manifests through writing, speaking, or performing. They are imaginative thinkers. People with this number are magnetic and cheerful. Their enthusiasm is contagious. They enjoy entertaining and inspiring others. However, they must stay grounded and avoid distractions. They thrive when they embrace discipline alongside creativity. Number 3 promotes emotional expression and artistic success. Their journey is filled with laughter, inspiration, and the sharing of beauty and ideas.",
+  4: "Number 4 stands for stability, structure, and discipline. Those under this number are dependable and hardworking. They believe in building strong foundations. Their approach is practical and focused on results. They often excel in systems and routines. Loyalty and honesty are key traits. These individuals are seen as reliable pillars in their communities. Their methodical mindset allows them to create lasting outcomes. They must avoid rigidity or becoming overly cautious. Persistence brings them success. They achieve through consistent effort. Number 4 values order and purpose. Their journey is about creating security and tangible progress.",
+  5: "Number 5 represents freedom, adaptability, and adventure. These individuals crave variety and excitement. They are curious and open-minded. Their desire for exploration often leads to travel or constant learning. They are excellent communicators and persuasive speakers. Change energizes them. They must avoid impulsiveness or restlessness. When focused, they become powerful agents of change. Number 5 promotes experience through action. They thrive on new opportunities and spontaneous decisions. Their spirit is rebellious and innovative. Independence is vital for their growth. Their journey is filled with dynamic experiences, discoveries, and transformation.",
+  6: "Number 6 symbolizes responsibility, nurturing, and harmony. These individuals are compassionate caregivers. They find joy in helping others and creating peace. Family and community are central to their identity. Their protective nature makes them reliable and loving. They often serve as mediators or support systems. Balance between giving and self-care is essential. Their sense of justice is strong. They are drawn to roles that involve teaching, healing, or caregiving. Beauty and comfort are important to them. Their home is their sanctuary. Number 6 walks a path of service, empathy, and unconditional love.",
+  7: "Number 7 represents introspection, wisdom, and spiritual insight. These individuals are thinkers and seekers of truth. They enjoy solitude and deep contemplation. Their analytical mind often leads them to philosophy or science. They are intuitive and perceptive. Privacy is important to them. They seek answers beyond the surface. Number 7 values authenticity and knowledge. They may appear reserved, but they are deeply thoughtful. Their spiritual journey is profound. They must balance analysis with faith. Their role is to uncover hidden truths and share them wisely. Their life path is one of insight, exploration, and inner growth.",
+  8: "Number 8 stands for power, ambition, and material success. Individuals with this number are goal-oriented and business-minded. They understand authority and responsibility. Their determination drives them to succeed. They often excel in leadership or financial roles. Balance between material and spiritual values is key. They are resilient and strategic. Challenges only make them stronger. They must avoid becoming overly controlling or obsessed with status. Number 8 teaches the lesson of wise stewardship. Their path is about manifestation, success, and legacy. With integrity, they can become powerful forces for good.",
+  9: "Number 9 symbolizes compassion, humanitarianism, and completion. These individuals are idealistic and generous. They have a deep sense of empathy. Their mission often involves helping the world. They are emotionally intelligent and forgiving. They see the bigger picture. Their wisdom comes from experience. They must avoid becoming overly self-sacrificing or disillusioned. Number 9 people inspire others with their vision. They are natural teachers and healers. Their journey is about service and emotional evolution. They bring closure and transformation to situations. Their path leads to universal love and spiritual fulfillment."
+};
 
-  <h2>Lo Shu Grid</h2>
-  <div class="grid" id="loShu"></div>
+function calculate() {
+  const name = document.getElementById('name').value.trim();
+  const dob = document.getElementById('dob').value;
+  const system = document.getElementById('system').value;
+  let report = '';
 
-  <script>
-    const pythagorean = {
-      A:1,B:2,C:3,D:4,E:5,F:6,G:7,H:8,I:9,
-      J:1,K:2,L:3,M:4,N:5,O:6,P:7,Q:8,R:9,
-      S:1,T:2,U:3,V:4,W:5,X:6,Y:7,Z:8
-    };
-    const chaldean = {
-      A:1,B:2,C:3,D:4,E:5,F:8,G:3,H:5,I:1,
-      J:1,K:2,L:3,M:4,N:5,O:7,P:8,Q:1,R:2,
-      S:3,T:4,U:6,V:6,W:6,X:5,Y:1,Z:7
-    };
+  if (!name) {
+    document.getElementById('report').innerText = 'Please enter your name.';
+    return;
+  }
 
-    const vowels = ["A","E","I","O","U"];
-    const karmicDebts = [13,14,16,19];
-
-    function reduce(num) {
-      if ([11, 22, 33].includes(num)) return num;
-      while (num > 9) {
-        num = num.toString().split('').reduce((a,b)=>a+ +b,0);
-      }
-      return num;
+  // Convert name to numbers
+  const numerologyMap = {
+    pythagorean: {
+      A:1,B:2,C:3,D:4,E:5,F:6,G:7,H:8,I:9,J:1,K:2,L:3,M:4,N:5,O:6,P:7,Q:8,R:9,S:1,T:2,U:3,V:4,W:5,X:6,Y:7,Z:8
+    },
+    chaldean: {
+      A:1,B:2,C:3,D:4,E:5,F:8,G:3,H:5,I:1,J:1,K:2,L:3,M:4,N:5,O:7,P:8,Q:1,R:2,S:3,T:4,U:6,V:6,W:6,X:5,Y:1,Z:7
     }
+  };
 
-    function analyze() {
-      const name = document.getElementById('name').value.toUpperCase().replace(/[^A-Z0-9]/g, '');
-      const dob = document.getElementById('dob').value;
-      const system = document.getElementById('system').value;
-      const map = system === 'chaldean' ? chaldean : pythagorean;
+  const map = numerologyMap[system];
+  const letters = name.toUpperCase().replace(/[^A-Z]/g, '').split('');
+  const fullNumbers = letters.map(l => map[l] || 0);
 
-      let total = 0, vowelsSum = 0, consSum = 0;
-      for (let ch of name) {
-        const val = map[ch] || 0;
-        total += val;
-        if (vowels.includes(ch)) vowelsSum += val;
-        else consSum += val;
-      }
-      const expressionCompound = total;
-      const expression = reduce(total);
-      const soulUrge = reduce(vowelsSum);
-      const personality = reduce(consSum);
+  const vowels = 'AEIOU';
+  const vowelNums = letters.map(l => vowels.includes(l) ? map[l] || 0 : 0).filter(n => n !== 0);
+  const consonantNums = letters.map(l => !vowels.includes(l) ? map[l] || 0 : 0).filter(n => n !== 0);
 
-      let lifePath = 'N/A', birthdayNum = 'N/A', maturity = 'N/A', attitude = 'N/A';
-      let grid = Array(9).fill(0);
+  const expression = reduce(fullNumbers);
+  const soulUrge = reduce(vowelNums);
+  const personality = reduce(consonantNums);
 
-      if (dob) {
-        const d = new Date(dob);
-        const dd = d.getDate(), mm = d.getMonth()+1, yyyy = d.getFullYear();
-        const lifePathRaw = [...(dd+""+mm+""+yyyy)].map(n=>+n).reduce((a,b)=>a+b,0);
-        lifePath = reduce([...String(dd)+String(mm)+String(yyyy)].map(n=>+n).reduce((a,b)=>a+b,0));
-        birthdayNum = reduce(dd);
-        maturity = reduce(expression + lifePath);
-        attitude = reduce(dd + mm);
+  report += `Name-Based Numbers\n`;
+  report += `------------------------\n`;
+  report += `Expression Number: ${expression} → ${numberMeanings[expression] || 'N/A'}\n\n`;
+  report += `Soul Urge Number: ${soulUrge} → ${numberMeanings[soulUrge] || 'N/A'}\n\n`;
+  report += `Personality Number: ${personality} → ${numberMeanings[personality] || 'N/A'}\n\n`;
 
-        for (let ch of (""+dd+mm+yyyy)) grid[+ch-1]++;
-      }
+  if (dob) {
+    const [yyyy, mm, dd] = dob.split('-').map(Number);
+    const lifePath = reduce([...`${yyyy}${mm}${dd}`].map(Number));
+    const birthday = reduce([...`${dd}`].map(Number));
+    report += `Date-Based Numbers\n`;
+    report += `------------------------\n`;
+    report += `Life Path Number: ${lifePath} → ${numberMeanings[lifePath] || 'N/A'}\n\n`;
+    report += `Birthday Number: ${birthday} → ${numberMeanings[birthday] || 'N/A'}\n\n`;
 
-      let report = `--- NUMEROLOGY REPORT ---\n\n`;
-      report += `Numerology System: ${system.charAt(0).toUpperCase() + system.slice(1)}\n`;
-      report += `Name: ${name}\n`;
-      report += `Expression Number: ${expression} (Compound: ${expressionCompound})\n`;
-      report += `Soul Urge Number: ${soulUrge}\n`;
-      report += `Personality Number: ${personality}\n`;
-
-      if (dob) {
-        report += `Life Path Number: ${lifePath}\n`;
-        report += `Birthday Number: ${birthdayNum}\n`;
-        report += `Maturity Number: ${maturity}\n`;
-        report += `Attitude Number: ${attitude}\n`;
-      }
-
-      if (karmicDebts.includes(expressionCompound)) report += `⚠️ Karmic Debt Number detected in Expression: ${expressionCompound}\n`;
-      if (dob && karmicDebts.includes(lifePath)) report += `⚠️ Karmic Debt in Life Path\n`;
-
-      report += `\n--- INTERPRETATION ---\n`;
-      report += `Expression (${expressionCompound} → ${expression}): Determines your talents and abilities.\n`;
-      report += `Soul Urge (${soulUrge}): Reflects inner cravings, likes, and dislikes.\n`;
-      report += `Personality (${personality}): Outward traits shown to others.\n`;
-      if (dob) {
-        report += `Life Path (${lifePath}): Your life's direction and purpose.\n`;
-        report += `Birthday (${birthdayNum}): Unique trait or gift.\n`;
-        report += `Maturity (${maturity}): Lifelong goal you grow into.\n`;
-        report += `Attitude (${attitude}): First impressions and external behavior.\n`;
-      }
-
-      document.getElementById('report').value = report;
-      drawLoShu(grid);
+    // Lo Shu Grid
+    const loShu = {1:0,2:0,3:0,4:0,5:0,6:0,7:0,8:0,9:0};
+    [...`${yyyy}${mm}${dd}`].map(Number).forEach(n => { if (n !== 0) loShu[n]++; });
+    report += `Lo Shu Grid (1–9):\n`;
+    for (let i = 1; i <= 9; i++) {
+      report += `${i}: ${loShu[i]}\n`;
     }
+    report += `\n`;
 
-    function drawLoShu(grid) {
-      const loShu = document.getElementById('loShu');
-      loShu.innerHTML = '';
-      for (let i = 0; i < 9; i++) {
-        loShu.innerHTML += `<div><strong>${i+1}</strong><br>${grid[i]}</div>`;
-      }
+    // Karmic Debt
+    const full = [...`${yyyy}${mm}${dd}`].map(Number);
+    const compound = full.reduce((a, b) => a + b, 0);
+    if ([13,14,16,19].includes(compound)) {
+      report += `⚠️ Karmic Debt Number Detected: ${compound}\n\n`;
     }
-  </script>
+  }
+
+  document.getElementById('report').innerText = report;
+}
+
+function reduce(nums) {
+  let total = nums.reduce((a, b) => a + b, 0);
+  while (![11,22,33].includes(total) && total > 9) {
+    total = [...`${total}`].map(Number).reduce((a, b) => a + b);
+  }
+  return total;
+}
+</script>
 </body>
 </html>
