@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NumPath - Numerology Calculator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #111;
+      color: #eee;
+      padding: 20px;
+      max-width: 800px;
+      margin: auto;
+    }
+    input, select, button, textarea {
+      width: 100%;
+      margin: 10px 0;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+    }
+    textarea {
+      height: 300px;
+    }
+    h1, h2 {
+      color: #0ff;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      text-align: center;
+    }
+    .grid div {
+      padding: 10px;
+      border: 1px solid #555;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <h1> NumPath - Numerology Calculator</h1>
+  <label for="name">Full Name:</label>
+  <input type="text" id="name" placeholder="Enter full name (A-Z, 0-9)">
+
+  <label for="dob">Date of Birth (optional):</label>
+  <input type="date" id="dob">
+
+  <label for="system">Numerology System:</label>
+  <select id="system">
+    <option value="pythagorean">Pythagorean</option>
+    <option value="chaldean">Chaldean</option>
+  </select>
+
+  <button onclick="analyze()">Analyze</button>
+
+  <h2>Analysis Report</h2>
+  <textarea id="report" readonly></textarea>
+
+  <h2>Lo Shu Grid</h2>
+  <div class="grid" id="loShu"></div>
+
+  <script>
+    const pythagorean = {
+      A:1,B:2,C:3,D:4,E:5,F:6,G:7,H:8,I:9,
+      J:1,K:2,L:3,M:4,N:5,O:6,P:7,Q:8,R:9,
+      S:1,T:2,U:3,V:4,W:5,X:6,Y:7,Z:8
+    };
+    const chaldean = {
+      A:1,B:2,C:3,D:4,E:5,F:8,G:3,H:5,I:1,
+      J:1,K:2,L:3,M:4,N:5,O:7,P:8,Q:1,R:2,
+      S:3,T:4,U:6,V:6,W:6,X:5,Y:1,Z:7
+    };
+
+    const vowels = ["A","E","I","O","U"];
+    const karmicDebts = [13,14,16,19];
+
+    function reduce(num) {
+      if ([11, 22, 33].includes(num)) return num;
+      while (num > 9) {
+        num = num.toString().split('').reduce((a,b)=>a+ +b,0);
+      }
+      return num;
+    }
+
+    function analyze() {
+      const name = document.getElementById('name').value.toUpperCase().replace(/[^A-Z0-9]/g, '');
+      const dob = document.getElementById('dob').value;
+      const system = document.getElementById('system').value;
+      const map = system === 'chaldean' ? chaldean : pythagorean;
+
+      let total = 0, vowelsSum = 0, consSum = 0;
+      for (let ch of name) {
+        const val = map[ch] || 0;
+        total += val;
+        if (vowels.includes(ch)) vowelsSum += val;
+        else consSum += val;
+      }
+      const expressionCompound = total;
+      const expression = reduce(total);
+      const soulUrge = reduce(vowelsSum);
+      const personality = reduce(consSum);
+
+      let lifePath = 'N/A', birthdayNum = 'N/A', maturity = 'N/A', attitude = 'N/A';
+      let grid = Array(9).fill(0);
+
+      if (dob) {
+        const d = new Date(dob);
+        const dd = d.getDate(), mm = d.getMonth()+1, yyyy = d.getFullYear();
+        const lifePathRaw = [...(dd+""+mm+""+yyyy)].map(n=>+n).reduce((a,b)=>a+b,0);
+        lifePath = reduce([...String(dd)+String(mm)+String(yyyy)].map(n=>+n).reduce((a,b)=>a+b,0));
+        birthdayNum = reduce(dd);
+        maturity = reduce(expression + lifePath);
+        attitude = reduce(dd + mm);
+
+        for (let ch of (""+dd+mm+yyyy)) grid[+ch-1]++;
+      }
+
+      let report = `--- NUMEROLOGY REPORT ---\n\n`;
+      report += `Numerology System: ${system.charAt(0).toUpperCase() + system.slice(1)}\n`;
+      report += `Name: ${name}\n`;
+      report += `Expression Number: ${expression} (Compound: ${expressionCompound})\n`;
+      report += `Soul Urge Number: ${soulUrge}\n`;
+      report += `Personality Number: ${personality}\n`;
+
+      if (dob) {
+        report += `Life Path Number: ${lifePath}\n`;
+        report += `Birthday Number: ${birthdayNum}\n`;
+        report += `Maturity Number: ${maturity}\n`;
+        report += `Attitude Number: ${attitude}\n`;
+      }
+
+      if (karmicDebts.includes(expressionCompound)) report += `⚠️ Karmic Debt Number detected in Expression: ${expressionCompound}\n`;
+      if (dob && karmicDebts.includes(lifePath)) report += `⚠️ Karmic Debt in Life Path\n`;
+
+      report += `\n--- INTERPRETATION ---\n`;
+      report += `Expression (${expressionCompound} → ${expression}): Determines your talents and abilities.\n`;
+      report += `Soul Urge (${soulUrge}): Reflects inner cravings, likes, and dislikes.\n`;
+      report += `Personality (${personality}): Outward traits shown to others.\n`;
+      if (dob) {
+        report += `Life Path (${lifePath}): Your life's direction and purpose.\n`;
+        report += `Birthday (${birthdayNum}): Unique trait or gift.\n`;
+        report += `Maturity (${maturity}): Lifelong goal you grow into.\n`;
+        report += `Attitude (${attitude}): First impressions and external behavior.\n`;
+      }
+
+      document.getElementById('report').value = report;
+      drawLoShu(grid);
+    }
+
+    function drawLoShu(grid) {
+      const loShu = document.getElementById('loShu');
+      loShu.innerHTML = '';
+      for (let i = 0; i < 9; i++) {
+        loShu.innerHTML += `<div><strong>${i+1}</strong><br>${grid[i]}</div>`;
+      }
+    }
+  </script>
+</body>
+</html>
