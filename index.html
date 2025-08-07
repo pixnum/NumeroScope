@@ -5,223 +5,205 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Numerology Calculator</title>
   <style>
-    :root {
-      --bg-color: #121212;
-      --text-color: #ffffff;
-      --accent-color: #00e5ff;
-      --card-bg: #1e1e1e;
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
     body {
-      margin: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: var(--bg-color);
-      color: var(--text-color);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
-      min-height: 100vh;
+      font-family: Arial, sans-serif;
+      background-color: #121212;
+      color: #fff;
       padding: 20px;
+      max-width: 700px;
+      margin: auto;
     }
-
-    header {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-
-    h1 {
-      color: var(--accent-color);
-      font-size: 2rem;
-      margin-bottom: 10px;
-    }
-
-    .container {
-      max-width: 800px;
-      width: 100%;
-      background-color: var(--card-bg);
-      border-radius: 10px;
-      padding: 20px;
-      box-shadow: 0 0 10px rgba(0, 229, 255, 0.2);
-    }
-
-    label {
-      display: block;
-      margin-top: 15px;
-      font-weight: bold;
-    }
-
     input, select, button {
       width: 100%;
       padding: 10px;
-      margin-top: 5px;
-      border-radius: 5px;
-      border: none;
-      font-size: 1rem;
+      margin-top: 10px;
     }
-
-    button {
-      background-color: var(--accent-color);
-      color: #000;
-      cursor: pointer;
+    .results {
+      margin-top: 30px;
+      background-color: #1e1e1e;
+      padding: 20px;
+      border-radius: 8px;
+    }
+    .interpretation {
+      margin-top: 10px;
+      font-style: italic;
+      font-size: 0.95em;
+      color: #ddd;
+    }
+    .lo-shu-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
       margin-top: 20px;
     }
-
-    button:hover {
-      opacity: 0.9;
-    }
-
-    .results, .summary {
-      margin-top: 30px;
+    .lo-shu-cell {
       background-color: #2a2a2a;
       padding: 15px;
-      border-radius: 10px;
-    }
-
-    .footer {
-      margin-top: auto;
       text-align: center;
-      color: #888;
-      font-size: 0.8rem;
-      margin-top: 40px;
-    }
-
-    @media screen and (max-width: 600px) {
-      h1 {
-        font-size: 1.5rem;
-      }
+      border-radius: 5px;
+      font-size: 1.2em;
     }
   </style>
 </head>
 <body>
-  <header>
-    <h1>Numerology Calculator</h1>
-    <p>Discover your hidden numbers and personality traits</p>
-  </header>
-
-  <div class="container">
-    <label for="fullname">Full Name:</label>
-    <input type="text" id="fullname" placeholder="Enter your full name" />
-
-    <label for="partnername">Partner's Name (optional):</label>
-    <input type="text" id="partnername" placeholder="Enter partner's full name" />
-
-    <label for="dob">Date of Birth:</label>
-    <input type="date" id="dob" />
-
-    <label for="system">Numerology System:</label>
-    <select id="system">
-      <option value="pythagorean">Pythagorean</option>
-      <option value="chaldean">Chaldean</option>
-    </select>
-
-    <button onclick="calculateNumerology()">Generate Report</button>
-
-    <div class="results" id="results" style="display:none"></div>
-    <div class="summary" id="summary" style="display:none"></div>
-    <button onclick="savePDF()">Save Report as PDF</button>
-  </div>
-
-  <div class="footer">
-    &copy; Manik Roy 2025
-  </div>
+  <h1>Numerology Calculator</h1>
+  <input type="text" id="fullname" placeholder="Your Full Name">
+  <input type="text" id="partnername" placeholder="Partner's Full Name (optional)">
+  <input type="date" id="dob">
+  <button onclick="calculateNumbers()">Calculate</button>
+  <div class="results" id="results"></div>
 
   <script>
-    const numerologyChart = {
-      pythagorean: {
-        A: 1, B: 2, C: 3, D: 4, E: 5, F: 6, G: 7, H: 8, I: 9,
-        J: 1, K: 2, L: 3, M: 4, N: 5, O: 6, P: 7, Q: 8, R: 9,
-        S: 1, T: 2, U: 3, V: 4, W: 5, X: 6, Y: 7, Z: 8
-      },
-      chaldean: {
-        A: 1, B: 2, C: 3, D: 4, E: 5, F: 8, G: 3, H: 5, I: 1,
-        J: 1, K: 2, L: 3, M: 4, N: 5, O: 7, P: 8, Q: 1, R: 2,
-        S: 3, T: 4, U: 6, V: 6, W: 6, X: 5, Y: 1, Z: 7
-      }
+    const pythagoreanMap = {
+      A:1,B:2,C:3,D:4,E:5,F:6,G:7,H:8,I:9,
+      J:1,K:2,L:3,M:4,N:5,O:6,P:7,Q:8,R:9,
+      S:1,T:2,U:3,V:4,W:5,X:6,Y:7,Z:8
     };
 
-    function reduceToSingleDigit(num) {
-      while (num > 9 && ![11, 22, 33].includes(num)) {
-        num = num.toString().split('').reduce((a, b) => a + Number(b), 0);
+    function reduceNumber(n) {
+      while (![11, 22, 33].includes(n) && n > 9) {
+        n = n.toString().split('').reduce((a,b)=>a+parseInt(b), 0);
       }
-      return num;
+      return n;
     }
 
-    function getLifePathNumber(dob) {
-      const digits = dob.replace(/-/g, '').split('').map(Number);
-      return reduceToSingleDigit(digits.reduce((a, b) => a + b, 0));
+    function getNameValue(name, filterFn) {
+      return name.toUpperCase().replace(/[^A-Z]/g, '').split('').filter(filterFn).reduce((sum, ch) => sum + (pythagoreanMap[ch] || 0), 0);
     }
 
-    function getExpressionNumber(name, chart) {
-      return reduceToSingleDigit(name.toUpperCase().replace(/[^A-Z]/g, '').split('').reduce((sum, ch) => sum + (chart[ch] || 0), 0));
+    function getInterpretation(type, number) {
+      const messages = {
+        lifePath: {
+          1: "You are a born leader..."
+        },
+        attitude: {
+          1: "An assertive first impression..."
+        },
+        maturity: {
+          1: "In maturity, you become a stronger leader..."
+        },
+        personalYear: {
+          1: "This is a year of new beginnings..."
+        },
+        expression: {
+          1: "Expression 1 indicates strong leadership skills and a pioneering spirit..."
+        },
+        soulUrge: {
+          1: "Soul Urge 1 reveals a deep desire to be independent and original..."
+        },
+        personality: {
+          1: "Personality 1 reflects a confident, assertive, and ambitious outer self..."
+        },
+        karmicLessons: {
+          4: "You may have a karmic lesson with discipline and work ethic...",
+          7: "A lesson in trust and spiritual connection may exist...",
+          8: "You are learning balance in power, control, and finances..."
+        },
+        compatibility: {
+          good: "Your name numbers are in harmony, indicating ease and support in your relationship.",
+          average: "There may be challenges, but with effort, this relationship can thrive.",
+          poor: "There are significant differences in your numerological energy. Clear communication is key."
+        }
+      };
+      return messages[type] && messages[type][number] ? messages[type][number] : "";
     }
 
-    function getSoulUrgeNumber(name, chart) {
-      const vowels = 'AEIOU';
-      return reduceToSingleDigit(name.toUpperCase().split('').filter(ch => vowels.includes(ch)).reduce((sum, ch) => sum + (chart[ch] || 0), 0));
+    function calculateLoShu(dob) {
+      const digits = dob.replace(/-/g, '').split('');
+      const grid = Array(10).fill(0);
+      digits.forEach(d => grid[parseInt(d)]++);
+      return grid;
     }
 
-    function getPersonalityNumber(name, chart) {
-      const vowels = 'AEIOU';
-      return reduceToSingleDigit(name.toUpperCase().split('').filter(ch => !vowels.includes(ch) && /[A-Z]/.test(ch)).reduce((sum, ch) => sum + (chart[ch] || 0), 0));
+    function renderLoShu(grid) {
+      const mapOrder = [3, 2, 1, 6, 5, 4, 9, 8, 7];
+      return `
+        <h3>Lo Shu Grid</h3>
+        <div class="lo-shu-grid">
+          ${mapOrder.map(n => `<div class="lo-shu-cell">${grid[n] || ''}</div>`).join('')}
+        </div>
+        <div class="interpretation">This grid shows how many times each number appears in your birth date. Empty cells may point to karmic lessons, while multiple digits suggest strengths. Analyze the balance to gain insight into your character and life path.</div>
+      `;
     }
 
-    function calculateNumerology() {
-      const name = document.getElementById('fullname').value.trim();
-      const partnerName = document.getElementById('partnername').value.trim();
-      const dob = document.getElementById('dob').value;
-      const system = document.getElementById('system').value;
-      const results = document.getElementById('results');
-      const summary = document.getElementById('summary');
+    function getKarmicLessons(dobDigits) {
+      const missing = [1,2,3,4,5,6,7,8,9].filter(n => !dobDigits.includes(n.toString()));
+      return missing;
+    }
 
-      if (!name || !dob) {
-        alert('Please enter your name and date of birth.');
-        return;
-      }
+    function getCompatibilityScore(name1, name2) {
+      const value1 = reduceNumber(getNameValue(name1, () => true));
+      const value2 = reduceNumber(getNameValue(name2, () => true));
+      const diff = Math.abs(value1 - value2);
+      if (diff === 0 || diff === 1) return "good";
+      if (diff <= 3) return "average";
+      return "poor";
+    }
 
-      const chart = numerologyChart[system];
+    function calculateNumbers() {
+      const fullName = document.getElementById("fullname").value.trim();
+      const partnerName = document.getElementById("partnername").value.trim();
+      const dob = document.getElementById("dob").value;
+      if (!fullName || !dob) return alert("Please enter your name and date of birth.");
 
-      const lifePath = getLifePathNumber(dob);
-      const expression = getExpressionNumber(name, chart);
-      const soulUrge = getSoulUrgeNumber(name, chart);
-      const personality = getPersonalityNumber(name, chart);
-      const birthdayNumber = reduceToSingleDigit(Number(dob.split('-')[2]));
-      const maturityNumber = reduceToSingleDigit(lifePath + expression);
+      const nameLetters = fullName.toUpperCase().replace(/[^A-Z]/g, '');
+      const vowels = ['A', 'E', 'I', 'O', 'U'];
 
-      let compatibilityHTML = '';
+      const expressionNum = reduceNumber(getNameValue(fullName, () => true));
+      const soulUrgeNum = reduceNumber(getNameValue(fullName, l => vowels.includes(l)));
+      const personalityNum = reduceNumber(getNameValue(fullName, l => !vowels.includes(l)));
+
+      const [year, month, day] = dob.split("-").map(n => parseInt(n));
+      const birthdayNum = reduceNumber(day);
+      const attitudeNum = reduceNumber(day + month);
+      const lifePathNum = reduceNumber(year + month + day);
+      const maturityNum = reduceNumber(expressionNum + lifePathNum);
+
+      const currentYear = new Date().getFullYear();
+      const personalYear = reduceNumber(currentYear + month + day);
+
+      const results = document.getElementById("results");
+      const dobDigits = dob.replace(/-/g, '').split('');
+      const karmicLessons = getKarmicLessons(dobDigits);
+
+      let compatibility = "";
       if (partnerName) {
-        const partnerExpression = getExpressionNumber(partnerName, chart);
-        const compatibility = 9 - Math.abs(expression - partnerExpression);
-        compatibilityHTML = `<p><strong>Compatibility Score with ${partnerName}:</strong> ${compatibility} / 9</p>`;
+        const score = getCompatibilityScore(fullName, partnerName);
+        compatibility = `<p><strong>Compatibility:</strong> ${score}</p>
+        <div class="interpretation">${getInterpretation("compatibility", score)}</div>`;
       }
 
       results.innerHTML = `
-        <h3>Your Numerology Report</h3>
-        <p><strong>Life Path Number:</strong> ${lifePath}</p>
-        <p><strong>Expression Number:</strong> ${expression}</p>
-        <p><strong>Soul Urge Number:</strong> ${soulUrge}</p>
-        <p><strong>Personality Number:</strong> ${personality}</p>
-        <p><strong>Birthday Number:</strong> ${birthdayNumber}</p>
-        <p><strong>Maturity Number:</strong> ${maturityNumber}</p>
-        <p><strong>System Used:</strong> ${system.charAt(0).toUpperCase() + system.slice(1)}</p>
-        ${compatibilityHTML}
+        <h3>Numerology Results</h3>
+
+        <p><strong>Expression Number:</strong> ${expressionNum}</p>
+        <div class="interpretation">${getInterpretation("expression", expressionNum)}</div>
+
+        <p><strong>Soul Urge Number:</strong> ${soulUrgeNum}</p>
+        <div class="interpretation">${getInterpretation("soulUrge", soulUrgeNum)}</div>
+
+        <p><strong>Personality Number:</strong> ${personalityNum}</p>
+        <div class="interpretation">${getInterpretation("personality", personalityNum)}</div>
+
+        <p><strong>Life Path Number:</strong> ${lifePathNum}</p>
+        <div class="interpretation">${getInterpretation("lifePath", lifePathNum)}</div>
+
+        <p><strong>Attitude Number:</strong> ${attitudeNum}</p>
+        <div class="interpretation">${getInterpretation("attitude", attitudeNum)}</div>
+
+        <p><strong>Maturity Number:</strong> ${maturityNum}</p>
+        <div class="interpretation">${getInterpretation("maturity", maturityNum)}</div>
+
+        <p><strong>Personal Year Number:</strong> ${personalYear}</p>
+        <div class="interpretation">${getInterpretation("personalYear", personalYear)}</div>
+
+        ${renderLoShu(calculateLoShu(dob))}
+
+        <p><strong>Karmic Lessons:</strong> ${karmicLessons.join(', ') || 'None'}</p>
+        ${karmicLessons.map(n => `<div class="interpretation">${getInterpretation("karmicLessons", n)}</div>`).join('')}
+
+        ${compatibility}
       `;
-
-      summary.innerHTML = `
-        <h4>Summary Insights</h4>
-        <p>Your numbers highlight your strengths and tendencies. Each number provides insight into your personality, purpose, and life journey.</p>
-      `;
-
-      results.style.display = 'block';
-      summary.style.display = 'block';
-    }
-
-    function savePDF() {
-      window.print();
     }
   </script>
 </body>
