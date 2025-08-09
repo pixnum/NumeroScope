@@ -1,64 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1" />
-  <title>Numeroscope — Ultimate Numerology Calculator</title>
-  <meta name="description" content="Numeroscope: Pythagorean & Chaldean numerology with detailed 100-word reports. PWA-ready, offline-first, responsive UI." />
-  <meta name="theme-color" content="#5b3e96" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+  <meta name="description" content="Numeroscope – Ultimate Numerology Calculator (Pythagorean & Chaldean) with detailed 100-word reports." />
+  <title>Numeroscope – Ultimate Numerology Calculator</title>
 
-  <!-- Fallback favicons (embedded) -->
+  <!-- Small inline favicons (fallback), replace with your own if desired -->
   <link rel="icon" type="image/png" sizes="32x32" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAAXVBMVEUAAAD///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////9gUkQXAAAAGnRSTlMA6LnhXwoOayvf90nb4SvBzE0IlP52S+YQkpRkAAABeSURBVHjaY2AgBooYmJhIpKhoaGiGgYGBkYmRiqAqqqqurq6uDh4eHi4eLj4+Ph4+Ph4eHg4ODi4uLg4ODi4uLg4ODi4uLg4ODi4uLh5eVlZFWWVkZGRkWEDAVdJYEl0AVO1C7qugQWozkAMJe+P4AOj/AVFoQfZqgOKABQAAkADd7FJxQAAAABJRU5ErkJggg==" />
 
+  <meta name="theme-color" content="#ff0080" />
+
   <style>
-    /* ========== Base layout & variables ========== */
+    /* ---------- design variables & reset ---------- */
     :root{
-      --bg1: linear-gradient(135deg,#7b3ef9 0%,#ff54a2 100%);
-      --bg1-dark: linear-gradient(135deg,#120136 0%,#2a0048 100%);
-      --card-bg: rgba(255,255,255,0.12);
-      --card-bg-dark: rgba(255,255,255,0.06);
-      --accent: #ff54a2;
-      --accent-2: #7b3ef9;
-      --muted: rgba(255,255,255,0.85);
-      --text-dark: #23112b;
+      --primary-gradient: linear-gradient(135deg,#7928ca 0%,#ff0080 100%);
+      --primary-gradient-dark: linear-gradient(135deg,#2d004b 0%,#5f006e 100%);
+      --card-bg: rgba(255,255,255,0.15);
+      --card-bg-dark: rgba(20,10,30,0.4);
+      --accent: #ff0080;
+      --accent-contrast: #fff;
+      --text-light: #f5e7ff;
+      --text-dark: #111;
+      --shadow: 0 20px 40px rgba(0,0,0,0.28);
       --glass-border: rgba(255,255,255,0.06);
-      --shadow: 0 10px 30px rgba(0,0,0,0.28);
-      font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    }
-    html,body{height:100%;margin:0;}
-    body{
-      min-height:100%;
-      margin:0;
-      background:var(--bg1);
-      color:var(--muted);
+      --transition-fast: 250ms cubic-bezier(0.4,0,0.2,1);
+      font-family: "Inter", "Segoe UI", Roboto, Arial, sans-serif;
       -webkit-font-smoothing:antialiased;
       -moz-osx-font-smoothing:grayscale;
+    }
+    html,body{height:100%;margin:0;padding:0;}
+    body{
+      min-height:100vh;
+      margin:0;
+      padding:22px;
+      background:var(--primary-gradient);
+      color:var(--text-light);
       display:flex;
       flex-direction:column;
       align-items:center;
-      padding:18px;
-      transition:background 300ms ease,color 250ms ease;
+      transition:background var(--transition-fast), color var(--transition-fast);
     }
-    [data-theme="dark"]{ background:var(--bg1-dark); color:#e9e5f8; }
+    [data-theme="dark"] { background:var(--primary-gradient-dark); color:var(--text-light); }
 
-    /* Header */
+    /* ---------- header ---------- */
     header{
       width:100%;
       max-width:980px;
       text-align:center;
-      margin-bottom:18px;
+      margin-bottom:14px;
+      position:sticky;
+      top:8px;
+      z-index:200;
+      background:rgba(0,0,0,0.18);
+      padding:14px;
+      border-radius:12px;
+      backdrop-filter: blur(8px) saturate(120%);
+      box-shadow:0 6px 18px rgba(0,0,0,0.24);
     }
-    h1{
-      margin:0;
-      font-size:2.1rem;
-      letter-spacing:0.6px;
-      font-weight:800;
-      color: white;
-      text-shadow: 0 6px 20px rgba(0,0,0,0.28);
-    }
-    p.lead{margin:6px 0 0;font-weight:500;color:rgba(255,255,255,0.9);}
+    h1{ margin:0; font-size:2.4rem; font-weight:900; letter-spacing:0.6px; color:var(--accent-contrast); text-shadow:0 8px 30px rgba(0,0,0,0.35); }
+    p.lead{ margin:6px 0 0; font-weight:600; color:rgba(255,255,255,0.9); font-size:1rem; }
 
-    /* Top controls */
+    /* ---------- top controls ---------- */
     .controls{
       width:100%;
       max-width:980px;
@@ -66,239 +69,233 @@
       gap:12px;
       justify-content:space-between;
       align-items:center;
-      margin:14px 0 18px;
-    }
-    .system-select{
-      display:flex;
-      gap:10px;
-      align-items:center;
-    }
-    select, .btn, .icon-btn {
-      border:0; outline:0;
-      padding:8px 12px;
-      border-radius:10px;
-      font-weight:700;
-      cursor:pointer;
+      margin:18px 0;
+      flex-wrap:wrap;
     }
     select{
       background:rgba(255,255,255,0.9);
       color:var(--text-dark);
-      box-shadow:0 4px 18px rgba(0,0,0,0.15);
+      border-radius:12px;
+      padding:8px 12px;
+      border:none;
+      font-weight:700;
+      box-shadow:0 6px 18px rgba(0,0,0,0.12);
     }
-    .theme-btn{
-      background:rgba(255,255,255,0.95);
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      box-shadow:0 6px 22px rgba(0,0,0,0.18);
-      color:var(--text-dark);
-    }
-    [data-theme="dark"] select{ background:#351245; color:#f3e8ff; box-shadow:0 4px 18px rgba(123,62,249,0.12); }
-    [data-theme="dark"] .theme-btn{ background:transparent; color:#f3e8ff; box-shadow:none; border:1px solid rgba(255,255,255,0.05); }
+    [data-theme="dark"] select{ background:#351245; color:#f3e8ff; box-shadow:0 6px 18px rgba(123,62,249,0.06); }
 
-    /* Main grid (cards) */
+    .theme-btn{
+      width:48px; height:48px; border-radius:50%;
+      border:2px solid var(--accent); background:transparent; color:var(--accent);
+      display:inline-grid; place-items:center; cursor:pointer; box-shadow:0 6px 18px rgba(0,0,0,0.12);
+      transition:all 240ms ease;
+    }
+    .theme-btn:hover{ transform:translateY(-2px); box-shadow:0 10px 30px rgba(255,0,128,0.18); background:var(--accent); color:var(--accent-contrast); }
+    .theme-btn svg{ width:22px; height:22px; transition:transform 420ms ease; }
+    .theme-btn[data-theme="dark"] svg{ transform: rotate(180deg); }
+
+    /* ---------- grid layout ---------- */
     main.app{
       width:100%;
       max-width:980px;
       display:grid;
       grid-template-columns: repeat(2, 1fr);
       gap:18px;
+      align-items:start;
     }
-    @media (max-width:920px){ main.app{ grid-template-columns: repeat(1,1fr); } }
+    @media (max-width:920px){ main.app{ grid-template-columns: 1fr; } }
 
     .card{
       background:var(--card-bg);
-      border-radius:14px;
-      padding:16px;
+      border-radius:16px;
+      padding:18px;
       box-shadow:var(--shadow);
       border:1px solid var(--glass-border);
-      transition:transform 200ms ease, box-shadow 200ms ease, background 200ms ease;
+      transition:transform 180ms ease, box-shadow 180ms ease;
+      display:flex; flex-direction:column;
     }
     [data-theme="dark"] .card{ background:var(--card-bg-dark); box-shadow:0 16px 40px rgba(0,0,0,0.45); }
 
-    .card legend{ font-weight:800; font-size:1.05rem; color: white; margin-bottom:8px; display:block; }
-    .field{ display:flex; flex-direction:column; gap:8px; margin-bottom:10px; }
-    .field input[type="text"], .field input[type="date"]{
-      padding:10px 12px; border-radius:10px; border:0; font-weight:700;
+    legend{ font-size:1.05rem; font-weight:900; color:var(--accent-contrast); margin-bottom:10px; text-shadow:0 6px 16px rgba(0,0,0,0.25); display:block; }
+
+    .field{ display:flex; flex-direction:column; gap:8px; margin-bottom:12px; }
+    .field label{ font-weight:700; font-size:0.95rem; color:var(--accent-contrast); }
+    input[type="text"], input[type="date"]{
+      padding:12px 14px; border-radius:12px; border:0; font-size:1rem; font-weight:700;
       background:rgba(255,255,255,0.95); color:var(--text-dark);
+      box-shadow:inset 0 2px 8px rgba(0,0,0,0.08);
+      transition:box-shadow 200ms ease, background 200ms ease;
     }
-    [data-theme="dark"] .field input{ background:#2b004c; color:#f2e9ff; }
+    [data-theme="dark"] input{ background:#2b004c; color:#f7eaff; box-shadow: inset 0 2px 10px rgba(123,62,249,0.12); }
+    input:focus{ box-shadow:0 0 12px rgba(255,0,128,0.22); outline:none; }
 
-    .card .btn{
-      margin-top:8px; width:100%;
-      background:linear-gradient(90deg,var(--accent-2),var(--accent));
-      color:white; font-weight:900;
-      box-shadow:0 8px 28px rgba(123,62,249,0.28);
+    .btn{
+      margin-top:6px; padding:14px 12px; border-radius:18px;
+      background:linear-gradient(90deg,#7b3ef9,#ff0080); color:white; font-weight:900; border:none;
+      box-shadow:0 10px 30px rgba(123,62,249,0.18); cursor:pointer; font-size:1.05rem;
+      transition:transform 120ms ease, box-shadow 160ms ease;
     }
-    .card .btn:active{ transform:translateY(1px); }
+    .btn:active{ transform:translateY(2px); box-shadow:0 6px 18px rgba(123,62,249,0.28); }
 
-    /* Results area full width below cards */
-    .results-wrap{ grid-column:1 / -1; margin-top:6px; }
-    .results {
-      background:rgba(255,255,255,0.95);
+    /* results full-width */
+    .results-wrap{
+      grid-column:1 / -1;
+      margin-top:12px;
+      background:rgba(255,255,255,0.96);
+      border-radius:14px;
+      padding:20px;
       color:var(--text-dark);
-      border-radius:12px;
-      padding:18px;
-      min-height:220px;
       font-family: "Courier New", monospace;
-      font-size:0.97rem;
-      box-shadow: inset 0 3px 10px rgba(0,0,0,0.06);
-      white-space:pre-wrap;
-      overflow:auto;
+      font-size:0.96rem;
+      min-height:260px;
+      box-shadow:inset 0 4px 12px rgba(0,0,0,0.06);
+      overflow:auto; white-space:pre-wrap;
     }
-    [data-theme="dark"] .results{ background:#2b004c; color:#f3e8ff; box-shadow: inset 0 6px 20px rgba(123,62,249,0.2); }
+    [data-theme="dark"] .results-wrap{ background:#2b004c; color:#f7eaff; box-shadow: inset 0 8px 24px rgba(0,0,0,0.4); }
 
-    footer{
-      margin-top:20px; color:rgba(255,255,255,0.85);
-      font-size:0.9rem;
-      text-align:center;
-    }
-
-    /* small helper styles */
-    .small { font-size:0.86rem; opacity:0.95; }
-    .muted { opacity:0.85; font-weight:600; }
-    .row { display:flex; gap:8px; }
-    .half { flex:1; }
+    footer{ margin-top:20px; color:rgba(255,255,255,0.9); font-weight:700; text-align:center; }
+    .visually-hidden{ position:absolute; left:-99999px; top:auto; width:1px; height:1px; overflow:hidden;}
   </style>
 </head>
 <body>
 
   <header>
     <h1>Numeroscope</h1>
-    <p class="lead">Ultimate Numerology Calculator — Pythagorean & Chaldean with 100‑word reports</p>
+    <p class="lead">Ultimate Numerology Calculator — Pythagorean & Chaldean (100‑word reports)</p>
+
+    <div class="controls" role="region" aria-label="Controls">
+      <div>
+        <label for="systemSelect" class="visually-hidden">Numerology System</label>
+        <select id="systemSelect" aria-label="Select numerology system">
+          <option value="p">Pythagorean</option>
+          <option value="c">Chaldean</option>
+        </select>
+      </div>
+
+      <div>
+        <button class="theme-btn" id="themeBtn" aria-label="Toggle theme" aria-pressed="false" data-theme="light" title="Theme">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="5"></circle>
+            <g><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line></g>
+          </svg>
+        </button>
+      </div>
+    </div>
   </header>
-
-  <div class="controls" style="max-width:980px;">
-    <div class="system-select">
-      <label for="numerologySystem" class="muted small">System</label>
-      <select id="numerologySystem" aria-label="Numerology system">
-        <option value="p">Pythagorean</option>
-        <option value="c">Chaldean</option>
-      </select>
-    </div>
-
-    <div style="display:flex;gap:10px;align-items:center;">
-      <button class="theme-btn" id="themeBtn" title="Toggle theme" aria-pressed="false">
-        <svg width="18" height="18" viewBox="0 0 24 24" style="display:block;"><path d="M12 3a9 9 0 1 0 9 9 9 9 0 0 0-9-9z" fill="#6a2dad"></path></svg>
-        <span class="small">Theme</span>
-      </button>
-    </div>
-  </div>
 
   <main class="app" role="main" aria-live="polite" aria-atomic="true">
 
     <!-- Full Name -->
-    <section class="card" aria-labelledby="nameLegend">
-      <legend id="nameLegend">Full Name Calculator</legend>
+    <form class="card" id="fullNameForm" aria-labelledby="fullNameLegend">
+      <legend id="fullNameLegend">Full Name Calculator</legend>
       <div class="field">
-        <label class="small">Full Name</label>
-        <input id="fullName" type="text" placeholder="e.g. Jane Maria Doe" autocomplete="off">
+        <label for="fullNameInput">Full Name</label>
+        <input id="fullNameInput" type="text" placeholder="e.g. Jane Maria Doe" autocomplete="name" />
       </div>
       <div class="field">
-        <label class="small">Birthdate (optional)</label>
-        <input id="birthDate" type="date">
+        <label for="birthDateInput">Birthdate (optional)</label>
+        <input id="birthDateInput" type="date" />
       </div>
-      <button class="btn" id="calcNameBtn">Calculate</button>
-    </section>
+      <button type="submit" class="btn">Calculate</button>
+    </form>
 
     <!-- Mobile Number -->
-    <section class="card" aria-labelledby="mobileLegend">
+    <form class="card" id="mobileForm" aria-labelledby="mobileLegend">
       <legend id="mobileLegend">Mobile Number Numerology</legend>
       <div class="field">
-        <label class="small">Mobile / Phone Number</label>
-        <input id="mobileNumber" type="text" placeholder="Digits & separators accepted">
+        <label for="mobileInput">Mobile Number</label>
+        <input id="mobileInput" type="text" placeholder="e.g. +1 555 555 5555" inputmode="numeric" />
       </div>
-      <button class="btn" id="calcMobileBtn">Analyze</button>
-    </section>
+      <button type="submit" class="btn">Analyze</button>
+    </form>
 
-    <!-- Angle / Repeating numbers -->
-    <section class="card" aria-labelledby="angleLegend">
-      <legend id="angleLegend">Angle / Repeating Numbers</legend>
+    <!-- Angle/Repeating Numbers -->
+    <form class="card" id="angleForm" aria-labelledby="angleLegend">
+      <legend id="angleLegend">Angle / Repeating Numbers Analyzer</legend>
       <div class="field">
-        <label class="small">Angle or Repeating Number</label>
-        <input id="angleNumber" type="text" placeholder="e.g. 11:11 or 2222">
+        <label for="angleInput">Angle/Repeating Number</label>
+        <input id="angleInput" type="text" placeholder="e.g. 11:11 or 2222" />
       </div>
-      <button class="btn" id="calcAngleBtn">Analyze</button>
-    </section>
+      <button type="submit" class="btn">Analyze</button>
+    </form>
 
     <!-- License Plate -->
-    <section class="card" aria-labelledby="licenseLegend">
-      <legend id="licenseLegend">License Plate Reading</legend>
+    <form class="card" id="licenseForm" aria-labelledby="licenseLegend">
+      <legend id="licenseLegend">License Plate Number Reading</legend>
       <div class="field">
-        <label class="small">License Plate</label>
-        <input id="licensePlate" type="text" placeholder="Alphanumeric allowed">
+        <label for="licenseInput">License Plate</label>
+        <input id="licenseInput" type="text" placeholder="e.g. ABC 1234" />
       </div>
-      <button class="btn" id="calcLicenseBtn">Read</button>
-    </section>
+      <button type="submit" class="btn">Read</button>
+    </form>
 
     <!-- Product Serial -->
-    <section class="card" aria-labelledby="productLegend">
-      <legend id="productLegend">Product Serial Analyzer</legend>
+    <form class="card" id="productForm" aria-labelledby="productLegend">
+      <legend id="productLegend">Product Serial Number Analyzer</legend>
       <div class="field">
-        <label class="small">Product Serial / Code</label>
-        <input id="productSerial" type="text" placeholder="Serial, SKU, model no.">
+        <label for="productInput">Product Serial</label>
+        <input id="productInput" type="text" placeholder="e.g. X123-ABC-456" />
       </div>
-      <button class="btn" id="calcProductBtn">Analyze</button>
-    </section>
+      <button type="submit" class="btn">Analyze</button>
+    </form>
 
-    <!-- Name change -->
-    <section class="card" aria-labelledby="changeLegend">
+    <!-- Name Change -->
+    <form class="card" id="nameChangeForm" aria-labelledby="changeLegend">
       <legend id="changeLegend">Name Change Evaluator</legend>
       <div class="field">
-        <label class="small">Original Name</label>
-        <input id="originalName" type="text">
+        <label for="originalNameInput">Original Name</label>
+        <input id="originalNameInput" type="text" placeholder="e.g. John Doe" />
       </div>
       <div class="field">
-        <label class="small">Test / New Name</label>
-        <input id="testName" type="text">
+        <label for="newNameInput">New Name (test)</label>
+        <input id="newNameInput" type="text" placeholder="e.g. Jonathan Doe" />
       </div>
-      <button class="btn" id="calcNameChangeBtn">Evaluate</button>
-    </section>
+      <button type="submit" class="btn">Evaluate</button>
+    </form>
 
-    <!-- Name vibration -->
-    <section class="card" aria-labelledby="vibLegend">
+    <!-- Name Vibration -->
+    <form class="card" id="vibrationForm" aria-labelledby="vibLegend">
       <legend id="vibLegend">Name Vibration Checker</legend>
       <div class="field">
-        <label class="small">Name</label>
-        <input id="vibrationName" type="text">
+        <label for="vibInput">Name</label>
+        <input id="vibInput" type="text" placeholder="e.g. Jane Doe" />
       </div>
-      <button class="btn" id="calcVibrationBtn">Check Vibration</button>
-    </section>
+      <button type="submit" class="btn">Check</button>
+    </form>
 
-    <!-- Business name -->
-    <section class="card" aria-labelledby="bizLegend">
+    <!-- Business/Product Name -->
+    <form class="card" id="businessForm" aria-labelledby="bizLegend">
       <legend id="bizLegend">Business / Product Name Checker</legend>
       <div class="field">
-        <label class="small">Business or Product Name</label>
-        <input id="businessName" type="text" placeholder="Brand, product or store name">
+        <label for="bizInput">Business or Product Name</label>
+        <input id="bizInput" type="text" placeholder="e.g. Starshine Cosmetics" />
       </div>
-      <button class="btn" id="calcBusinessBtn">Check Name</button>
-    </section>
+      <button type="submit" class="btn">Validate</button>
+    </form>
 
-    <!-- Results block full width -->
-    <div class="results-wrap card" style="background:transparent; box-shadow:none; border:none;">
-      <div style="width:100%;" class="results" id="results" aria-live="polite" aria-atomic="true">Your Numerology Report Analysis will appear here. Each explanation is a thoughtfully written ~100-word analysis tailored to the calculated number.</div>
-    </div>
+    <!-- Results full width -->
+    <section class="results-wrap" id="results" tabindex="0" aria-live="polite" aria-atomic="true">
+      <strong>Numeroscope Report Analysis</strong>
+      <p>Fill any form and press the button. Each output includes a full ~100-word analysis for the calculated numerology number.</p>
+    </section>
 
   </main>
 
-  <footer>
-    Tip: For best “Add to Home Screen” experience, serve the file via HTTPS or open on localhost. This single-page app includes an inline manifest and tries to register a service worker automatically.
-  </footer>
+  <footer>&copy; Numeroscope • Designed for Android, iOS, Windows, mobile & desktop</footer>
 
-  <!-- ========== SCRIPT: logic, data, manifest & SW registration ========== -->
+  <!-- ========================= SCRIPT ========================= -->
   <script>
-  /**************************************************************************
-   * Numeroscope — readable, well-commented script
+  /*************************************************************************
+   * Numeroscope JS - fully readable
+   * features:
    * - dual numerology maps (Pythagorean & Chaldean)
-   * - calculation helpers
-   * - fixed ~100-word descriptions for numbers 1-9, 11,22,33
-   * - UI wiring for each module
-   * - dynamic manifest creation (with embedded base64 icons)
-   * - in-page service worker registration via blob (works on HTTPS/localhost)
-   **************************************************************************/
+   * - calculate and reduce numbers, preserve master numbers 11/22/33
+   * - approx 100-word fixed descriptions per number (1-9, 11,22,33)
+   * - UI wiring for all calculators
+   * - inline manifest creation for better A2HS behavior (embedded base64 icons)
+   * - lightweight service worker registration via blob (works on HTTPS/localhost)
+   *************************************************************************/
 
-  // ---------- maps ----------
+  /* ----------------- maps ----------------- */
   const pythagoreanMap = {
     a:1,b:2,c:3,d:4,e:5,f:6,g:7,h:8,i:9,
     j:1,k:2,l:3,m:4,n:5,o:6,p:7,q:8,r:9,
@@ -310,165 +307,22 @@
     s:3,t:4,u:6,v:6,w:6,x:5,y:1,z:7
   };
 
-  // ---------- utilities ----------
+  /* ----------------- helpers ----------------- */
   function sumDigits(n){
-    return String(n).split('').reduce((s,ch)=>s+Number(ch||0),0);
+    return String(n).split('').reduce((s,ch)=>s + Number(ch||0), 0);
   }
   function reduceToOneDigit(num){
-    // preserve masters 11,22,33 if they appear exactly
-    if ([11,22,33].includes(num)) return num;
-    while(num>9 && ![11,22,33].includes(num)){
+    if ([11,22,33].includes(num)) return num; // keep master numbers if exactly equal
+    while(num > 9 && ![11,22,33].includes(num)){
       num = sumDigits(num);
     }
     return num;
   }
 
   function calculateNameValue(str, system){
-    // allow alphanumeric (letters map via chosen map; digits add directly)
-    const map = system === 'c' ? chaldeanMap : pythagoreanMap;
     if(!str) return null;
-    str = String(str).toLowerCase();
-    let total = 0;
-    for(const ch of str){
-      if(/[a-z]/.test(ch)) total += map[ch] || 0;
-      else if (/\d/.test(ch)) total += Number(ch);
-    }
-    return reduceToOneDigit(total);
-  }
-
-  // ---------- 100-word (approx) vibrational descriptions ----------
-  // Each string contains ~100 words and describes character, strengths, challenges, and advice.
-  function vibrationalMeaning(num){
-    const texts = {
-      1: `Number 1 is the embodiment of leadership, independence, and new beginnings. It represents the pioneering spirit and a deep drive to achieve personal goals. People under this vibration are ambitious, confident, and self-reliant; they prefer to lead and set new standards rather than follow. Their creativity often shows through initiative and original thinking. Challenges include a tendency toward impatience, competitiveness, or stubbornness when others resist. The best approach is to temper ambition with empathy, cultivate patience, and invite collaboration when needed. When balanced, number 1 energy manifests as inspired leadership that motivates others and produces clear, lasting results.`,
-    2: `Number 2 vibrates with diplomacy, cooperation, and the art of relationship. Those influenced by number 2 excel at listening, empathizing, and creating environments of peace and mutual support. Their strength lies in intuition and emotional intelligence, making them natural mediators, partners, and team builders. They prefer harmony over conflict and often sacrifice personal spotlight to nurture community ties. Challenges include indecision or a tendency to prioritize others’ needs over their own. Advice: practice healthy boundaries and assertive kindness. With balance, number 2 fosters strong partnerships, reliable teamwork, and gentle influence that quietly transforms tense situations into constructive collaborations.`,
-    3: `Number 3 radiates creativity, joyful expression, and sociable charm. People with this vibration often possess natural artistic gifts, excellent communication skills, and an infectious optimism. They shine in roles that allow storytelling, performance, or imaginative problem solving. Their enthusiasm draws others and uplifts teams, but dispersing energy and lack of focus can be pitfalls. They thrive when they structure creative efforts into manageable projects and follow through consistently. Embrace discipline gently, channeling spontaneity into productive outlets. In healthy expression, number 3 brings laughter, inspiration, and contagious positivity that encourages others to create and celebrate life’s possibilities.`,
-    4: `Number 4 signifies practicality, dedication, and the art of building durable foundations. Individuals with this vibration are organized, reliable, and deeply committed to tasks that require persistence and attention to detail. They excel at long-term planning, systems thinking, and turning abstract ideas into functional structures. Their steady work ethic yields dependable results, though rigidity and fear of change can present obstacles. Growth involves balancing structure with flexibility and avoiding perfectionism that stalls progress. When balanced, number 4 energy produces resilience, trustworthy competence, and the kind of patient craftsmanship that underpins lasting success and steady advancement in career and personal endeavors.`,
-    5: `Number 5 is restless, adventurous, and freedom-loving. This vibration celebrates curiosity, exploration, and a willingness to embrace change. People influenced by number 5 are versatile, quick-thinking, and enjoy variety in life—travel, new experiences, and experimentation energize them. Challenges include impulsivity, inconsistency, or difficulty committing long-term. The remedy is to cultivate mindful freedom: plan for change while maintaining a few stable anchors. Channel restless energy into learning and entrepreneurship where adaptability is an asset. With balance, number 5 leads to a life rich in discovery, personal growth, and the ability to reinvent oneself positively when circumstances shift.`,
-    6: `Number 6 centers on care, responsibility, and the nurturing of home and community. Those shaped by this vibration are compassionate, protective, and motivated to create harmony and beauty in relationships and surroundings. They often take on supportive roles—caregiver, teacher, counselor—where steadiness and service matter. Over-giving, perfectionism, or controlling tendencies can arise if boundaries are weak. Learning to receive as well as give is vital. Emphasize self-care while maintaining devotion to others. When balanced, number 6 energy creates loving, stable households and communities where responsibility is shared and compassionate leadership fosters wellbeing for many.`,
-    7: `Number 7 embodies introspection, intellectual depth, and spiritual seeking. Individuals with this vibration are analytical, contemplative, and drawn to study, research, and inner exploration. They prize solitude for reflection and often excel in academic, scientific, or metaphysical pursuits. While their insight is profound, they can be perceived as aloof or distant in social settings. Emotional vulnerability and connection may require conscious practice. Developing routines for self-expression alongside study helps integrate inner wisdom into daily life. Balanced number 7 energy yields a thoughtful, wise presence that blends analytical skill with intuitive understanding of life’s deeper patterns.`,
-    8: `Number 8 carries authority, ambition, and an ability to manifest material success. People guided by 8 are strategic, business-minded, and effective at organizing resources to achieve large goals. They are natural leaders in commerce, management, and practical problem-solving, often enjoying results from disciplined effort. However, a single-minded focus on achievement can create imbalance, risking burnout or ethical blind spots. Emphasize integrity, generosity, and long-term stewardship. When combined with clear values, number 8 energy empowers meaningful influence: building sustainable enterprises, creating prosperous systems, and guiding others with pragmatic vision and responsible leadership.`,
-    9: `Number 9 symbolizes completion, compassion, and global vision. Individuals with this vibration are often altruistic, creative, and motivated by humanitarian ideals. They feel a deep empathy for others and seek to enact change that uplifts broad communities. Artistic talent, leadership in service, and a desire to resolve injustices commonly appear. Challenges include emotional overwhelm or difficulty letting go at endings. Cultivating healthy detachment while channeling compassion into practical action helps. When embodied, number 9 brings wise, soulful leadership that inspires collective healing, fosters generosity, and helps realize projects that benefit many beyond the self.`,
-    11: `Master Number 11 represents heightened intuition, inspiration, and a calling toward spiritual insight. People with 11 often experience vivid inner knowing, psychic sensitivity, and a strong yearning to uplift others. This vibration emphasizes visionary creativity, charismatic communication, and a capacity to catalyze meaningful change through subtle influence. Challenges include nervous tension, mood swings, and self-doubt; spiritual practice and grounding techniques are highly supportive. When integrated, Master 11 enables compassionate leadership and awakens collective potentials, allowing an individual to act as a luminous channel—bringing fresh insight, creative solutions, and a deep, intuitive compass to guide important work.`,
-    22: `Master Number 22 is the pragmatic visionary: the master builder that turns large dreams into tangible reality. Individuals influenced by 22 combine intuition with stellar organizational skill and the discipline to enact durable projects affecting many. This vibration supports leadership in architecture, institutions, business, or community transformation—areas where scale and reliability matter. The main trials are stress from massive responsibility and the need to balance idealism with pragmatic constraints. Grounding routines, delegation, and ethical alignment are essential. When successfully embodied, 22 energy leaves lasting legacies: structures, systems, and institutions designed to uplift whole communities across generations.`,
-    33: `Master Number 33 is the master teacher of compassion, service, and spiritual leadership. Those carrying 33 energy are drawn to heal, teach, and inspire through lived example and tender authority. They combine creativity with profound empathy, often leading charitable or educational work that nurtures others’ growth. Challenges include self-sacrifice to the point of depletion and boundary difficulties. Learning to steward one’s own needs while serving others is crucial. When balanced, 33 radiates radiant teaching: transforming pain into compassion, guiding people toward their better selves, and fostering communities grounded in love, wisdom, and practical healing for many people at once.`
-    };
-    return texts[num] || "This number carries a complex vibration and may combine many traits. Use this as a starting point for reflection and explore how the qualities resonate in your life.";
-  }
-
-  // ---------- UI bindings ----------
-  const systemSelect = document.getElementById('numerologySystem');
-  const resultsEl = document.getElementById('results');
-
-  // Read values
-  const els = {
-    name: document.getElementById('fullName'),
-    birth: document.getElementById('birthDate'),
-    mobile: document.getElementById('mobileNumber'),
-    angle: document.getElementById('angleNumber'),
-    license: document.getElementById('licensePlate'),
-    product: document.getElementById('productSerial'),
-    origName: document.getElementById('originalName'),
-    testName: document.getElementById('testName'),
-    vibName: document.getElementById('vibrationName'),
-    biz: document.getElementById('businessName')
-  };
-
-  // Buttons
-  document.getElementById('calcNameBtn').addEventListener('click', ()=>{
-    const system = systemSelect.value;
-    const name = els.name.value.trim();
-    if(!name){ alert('Please enter a full name.'); els.name.focus(); return; }
-    const nameVal = calculateNameValue(name, system);
-    const birthVal = els.birth.value ? (function(){ let v=birthdateValue(els.birth.value); return v; })() : null;
-    let out = `Full Name Numerology (${system==='c'?'Chaldean':'Pythagorean'}):\n\n`;
-    out += `Name Value: ${nameVal}\n\n${vibrationalMeaning(nameVal)}\n\n`;
-    if(birthVal!==null) out += `Birthdate Value: ${birthVal}\n\n${vibrationalMeaning(birthVal)}\n\n`;
-    resultsEl.textContent = out;
-  });
-
-  document.getElementById('calcMobileBtn').addEventListener('click', ()=>{
-    const system = systemSelect.value;
-    const raw = els.mobile.value.trim();
-    if(!raw){ alert('Enter mobile number.'); els.mobile.focus(); return; }
-    const num = sumNumbersFromString(raw, system);
-    let out = `Mobile Number Numerology (${system==='c'?'Chaldean':'Pythagorean'}):\n\n`;
-    out += `Number Value: ${num}\n\n${vibrationalMeaning(num)}\n\n`;
-    resultsEl.textContent = out;
-  });
-
-  document.getElementById('calcAngleBtn').addEventListener('click', ()=>{
-    const system = systemSelect.value;
-    const raw = els.angle.value.trim();
-    if(!raw){ alert('Enter an angle or repeating number.'); els.angle.focus(); return; }
-    const digits = raw.replace(/\D/g,'');
-    if(!digits){ alert('No digits found.'); return; }
-    // Try to detect master 11/22/33 as whole sequences; otherwise reduce
-    let detected = null;
-    if (/^(11)+$/.test(digits)) detected = 11;
-    else if(/^(22)+$/.test(digits)) detected = 22;
-    else if(/^(33)+$/.test(digits)) detected = 33;
-    const value = detected || reduceToOneDigit(Number(digits));
-    let out = `Angle / Repeating Number Analysis:\n\nNumber Value: ${value}\n\n${vibrationalMeaning(value)}\n\n`;
-    resultsEl.textContent = out;
-  });
-
-  document.getElementById('calcLicenseBtn').addEventListener('click', ()=>{
-    const system = systemSelect.value;
-    const raw = els.license.value.trim();
-    if(!raw){ alert('Enter license plate.'); els.license.focus(); return; }
-    const val = sumNumbersFromString(raw, system);
-    let out = `License Plate Reading (${system==='c'?'Chaldean':'Pythagorean'}):\n\nNumber Value: ${val}\n\n${vibrationalMeaning(val)}\n\n`;
-    resultsEl.textContent = out;
-  });
-
-  document.getElementById('calcProductBtn').addEventListener('click', ()=>{
-    const system = systemSelect.value;
-    const raw = els.product.value.trim();
-    if(!raw){ alert('Enter product serial.'); els.product.focus(); return; }
-    const val = sumNumbersFromString(raw, system);
-    let out = `Product Serial Number Analysis (${system==='c'?'Chaldean':'Pythagorean'}):\n\nNumber Value: ${val}\n\n${vibrationalMeaning(val)}\n\n`;
-    resultsEl.textContent = out;
-  });
-
-  document.getElementById('calcNameChangeBtn').addEventListener('click', ()=>{
-    const system = systemSelect.value;
-    const o = els.origName.value.trim(), t = els.testName.value.trim();
-    if(!o || !t){ alert('Enter both original and test names.'); return; }
-    const orig = calculateNameValue(o, system), test = calculateNameValue(t, system);
-    let out = `Name Change Evaluation (${system==='c'?'Chaldean':'Pythagorean'}):\n\n`;
-    out += `Original (${o}) Value: ${orig}\n\n${vibrationalMeaning(orig)}\n\n`;
-    out += `New (${t}) Value: ${test}\n\n${vibrationalMeaning(test)}\n\n`;
-    out += (orig===test) ? "The vibration remains the same — the change may feel harmonious with your current energy." : "The vibration differs — expect a shift which could affect personality emphasis and life patterns.";
-    resultsEl.textContent = out;
-  });
-
-  document.getElementById('calcVibrationBtn').addEventListener('click', ()=>{
-    const system = systemSelect.value; const n = els.vibName.value.trim(); if(!n){ alert('Enter a name.'); return; }
-    const val = calculateNameValue(n, system);
-    let out = `Name Vibration Check (${system==='c'?'Chaldean':'Pythagorean'}):\n\nVibration Number: ${val}\n\n${vibrationalMeaning(val)}\n\n`;
-    resultsEl.textContent = out;
-  });
-
-  document.getElementById('calcBusinessBtn').addEventListener('click', ()=>{
-    const system = systemSelect.value; const n = els.biz.value.trim(); if(!n){ alert('Enter business/product name.'); return; }
-    const val = calculateNameValue(n, system);
-    let out = `Business/Product Name Check (${system==='c'?'Chaldean':'Pythagorean'}):\n\nName Value: ${val}\n\n${vibrationalMeaning(val)}\n\n`;
-    resultsEl.textContent = out;
-  });
-
-  // ---------- helper: birthdate & string sums ----------
-  function birthdateValue(datestr){
-    // YYYY-MM-DD -> sum digits
-    const parts = datestr.split('-');
-    if(parts.length!==3) return null;
-    let total = 0;
-    parts.forEach(p => total += sumDigits(p));
-    return reduceToOneDigit(total);
-  }
-  function sumNumbersFromString(str, system){
     const map = system === 'c' ? chaldeanMap : pythagoreanMap;
-    str = String(str || '').toLowerCase();
+    str = String(str).toLowerCase();
     let total = 0;
     for(const ch of str){
       if(/[a-z]/.test(ch)) total += map[ch] || 0;
@@ -477,97 +331,236 @@
     return reduceToOneDigit(total);
   }
 
-  // ---------- THEME handling ----------
-  const themeBtn = document.getElementById('themeBtn');
-  (function initTheme(){
-    const saved = localStorage.getItem('numeroscope-theme');
-    if(saved === 'dark'){
-      document.documentElement.setAttribute('data-theme','dark');
-      themeBtn.setAttribute('aria-pressed','true');
-    } else {
-      document.documentElement.removeAttribute('data-theme');
-      themeBtn.setAttribute('aria-pressed','false');
-    }
-  })();
-  themeBtn.addEventListener('click', ()=>{
-    if(document.documentElement.getAttribute('data-theme') === 'dark'){
-      document.documentElement.removeAttribute('data-theme');
-      localStorage.setItem('numeroscope-theme','light');
-      themeBtn.setAttribute('aria-pressed','false');
-    } else {
-      document.documentElement.setAttribute('data-theme','dark');
-      localStorage.setItem('numeroscope-theme','dark');
-      themeBtn.setAttribute('aria-pressed','true');
-    }
+  function sumNumbersFromString(str, system){
+    if(!str) return null;
+    return calculateNameValue(str, system);
+  }
+
+  function birthdateValue(dateStr){
+    if(!dateStr) return null;
+    const parts = dateStr.split('-'); // YYYY-MM-DD
+    if(parts.length !== 3) return null;
+    let total = 0;
+    parts.forEach(p => total += sumDigits(p));
+    return reduceToOneDigit(total);
+  }
+
+  /* ----------------- ~100-word descriptions ----------------- */
+  function vibrationalMeaning(num){
+    const texts = {
+      1: `Number 1 is the embodiment of leadership, independence, and new beginnings. It represents the pioneering spirit and the drive to achieve personal goals. People influenced by number 1 tend to be ambitious, confident, and self-reliant. They are natural-born leaders who thrive when taking initiative and creating their own path. This number encourages courage and originality, inspiring one to stand out and innovate. Challenges may include stubbornness or a tendency to be overly competitive. Embracing number 1 energy can lead to tremendous personal growth, success, and the ability to inspire others with vision and determination.`,
+      2: `Number 2 vibrates with diplomacy, cooperation, and harmony. It represents balance and partnership, emphasizing sensitivity and emotional intelligence. Individuals guided by number 2 are natural peacemakers who excel at creating connections and fostering understanding between others. This vibration encourages patience, empathy, and teamwork. People influenced by this number are often gentle, intuitive, and supportive, prioritizing relationships above personal ambition. While they avoid confrontation, they may struggle with indecisiveness. Number 2’s energy fosters collaboration and compromise, leading to harmonious environments and nurturing bonds in personal and professional life.`,
+      3: `Number 3 is the vibration of creativity, communication, and joy. It inspires artistic expression, optimism, and social engagement. Those influenced by number 3 possess a lively imagination and excel in verbal and written communication, often charming others with wit and humor. This number encourages enthusiasm and a zest for life, making individuals naturally sociable and inspiring. They are gifted storytellers and entertainers who thrive in creative environments. However, the challenge lies in maintaining focus and discipline. Embracing number 3 energy nurtures self-expression, happiness, and the ability to uplift others through positive energy.`,
+      4: `Number 4 signifies stability, practicality, and hard work. It is the foundation of discipline, organization, and responsibility. Individuals connected to number 4 are dependable and methodical, often excelling in structured environments. This vibration promotes perseverance and the ability to build lasting results through dedication and planning. People under the influence of number 4 are grounded and reliable, valuing security and order. While they may resist change and appear rigid, their persistence leads to success and mastery of their crafts. Number 4 energy encourages building solid foundations for future growth and achievements.`,
+      5: `Number 5 is the energy of freedom, adventure, and change. It represents curiosity, versatility, and the thrill of new experiences. Those influenced by number 5 are often dynamic, energetic, and love exploring life’s possibilities. This vibration encourages adaptability and open-mindedness, inspiring individuals to break free from routine and seek variety. While their love of excitement can lead to restlessness or impulsiveness, it also fosters growth through learning and transformation. Number 5 energy brings a spirit of liberation and encourages embracing life’s unpredictability with enthusiasm and courage.`,
+      6: `Number 6 embodies responsibility, nurturing, and harmony. It is deeply connected to home, family, and community. Individuals influenced by number 6 are caring, compassionate, and protective, often serving as caregivers or counselors. This vibration emphasizes love, balance, and service to others, encouraging the creation of peaceful and supportive environments. People under this number are idealistic and strive to bring beauty and order to their surroundings. Challenges may include a tendency to be overly self-sacrificing or controlling. Number 6 energy nurtures unconditional love, healing, and social responsibility.`,
+      7: `Number 7 resonates with spirituality, introspection, and wisdom. It encourages deep thinking, analysis, and a quest for truth. Individuals connected to number 7 often have a philosophical and mystical nature, seeking knowledge beyond the material world. This vibration promotes solitude, meditation, and inner growth. People influenced by number 7 are intuitive and often drawn to science, religion, or esoteric studies. While they may appear reserved or aloof, they possess profound insight and analytical skills. Embracing number 7 energy fosters enlightenment, intellectual discovery, and a deeper understanding of life’s mysteries.`,
+      8: `Number 8 is the vibration of power, ambition, and material success. It represents authority, financial acumen, and personal achievement. Individuals influenced by number 8 are goal-oriented and have strong leadership qualities. This vibration encourages discipline, self-confidence, and the ability to manifest wealth and abundance. People under this number excel in business, management, and entrepreneurship. Challenges may include workaholism or overemphasis on materialism. Number 8 energy teaches balance between spiritual values and material goals, helping individuals achieve lasting prosperity and influence through responsible leadership.`,
+      9: `Number 9 symbolizes compassion, humanitarianism, and completion. It is connected to universal love, tolerance, and selflessness. Individuals influenced by number 9 are often idealistic and generous, driven to make the world a better place. This vibration promotes creativity, empathy, and the desire to help others. People under number 9 are artistic, visionary, and deeply connected to humanitarian causes. While they may sometimes struggle with letting go or feeling overwhelmed, number 9 energy encourages forgiveness, altruism, and the fulfillment of life cycles with grace and wisdom.`,
+      11: `Master Number 11 embodies intuition, inspiration, and spiritual enlightenment. It acts as a bridge between the conscious and subconscious mind, offering heightened sensitivity and psychic ability. Individuals with this vibration are visionaries, often guided by a sense of mission or purpose beyond themselves. The energy of 11 encourages creativity, idealism, and leadership with compassion. Challenges include nervous tension and self-doubt. Embracing Master Number 11 fosters awakening, profound insight, and the ability to uplift others through light and inspiration, making it a powerful force for transformation.`,
+      22: `Master Number 22 is the master builder, representing large-scale endeavors, leadership, and practical idealism. It combines spiritual insight with the ability to manifest dreams into reality. Individuals influenced by 22 are capable of extraordinary achievements that benefit humanity, often working behind the scenes to create lasting impact. This number encourages discipline, vision, and strong organizational skills. Challenges involve balancing high expectations and managing stress. Embracing Master Number 22 nurtures strength, wisdom, and the power to create solid foundations for future generations, blending the material and spiritual worlds.`,
+      33: `Master Number 33 is the master teacher and nurturer, radiating compassion, blessings, and unconditional love. It is a highly spiritual vibration encouraging service to others, healing, and uplifting humanity. Individuals connected to 33 are gifted communicators and empathic leaders who inspire through kindness and understanding. This number emphasizes creativity, courage, and responsibility. Challenges include avoiding martyrdom and maintaining boundaries. Embracing Master Number 33 fosters harmony, enlightenment, and the ability to influence positive change by teaching through example and love. It represents the pinnacle of spiritual evolution.`
+    };
+    return texts[num] || "This number carries a complex vibration and may combine multiple traits. Use the summary as an introspective starting point.";
+  }
+
+  /* ----------------- UI wiring ----------------- */
+  const systemSelect = document.getElementById('systemSelect');
+  const resultsEl = document.getElementById('results');
+
+  // form elements
+  const fullNameForm = document.getElementById('fullNameForm');
+  const fullNameInput = document.getElementById('fullNameInput');
+  const birthDateInput = document.getElementById('birthDateInput');
+
+  const mobileForm = document.getElementById('mobileForm');
+  const mobileInput = document.getElementById('mobileInput');
+
+  const angleForm = document.getElementById('angleForm');
+  const angleInput = document.getElementById('angleInput');
+
+  const licenseForm = document.getElementById('licenseForm');
+  const licenseInput = document.getElementById('licenseInput');
+
+  const productForm = document.getElementById('productForm');
+  const productInput = document.getElementById('productInput');
+
+  const nameChangeForm = document.getElementById('nameChangeForm');
+  const originalNameInput = document.getElementById('originalNameInput');
+  const newNameInput = document.getElementById('newNameInput');
+
+  const vibrationForm = document.getElementById('vibrationForm');
+  const vibInput = document.getElementById('vibInput');
+
+  const businessForm = document.getElementById('businessForm');
+  const bizInput = document.getElementById('bizInput');
+
+  // handlers
+  fullNameForm.addEventListener('submit', (e)=>{
+    e.preventDefault();
+    const system = systemSelect.value;
+    const name = fullNameInput.value.trim();
+    if(!name){ alert('Please enter a full name.'); fullNameInput.focus(); return; }
+    const nameVal = calculateNameValue(name, system);
+    const birthVal = birthDateInput.value ? birthdateValue(birthDateInput.value) : null;
+    let out = `Full Name Numerology (${system==='c'?'Chaldean':'Pythagorean'})\n\nName: ${name}\nCalculated Number: ${nameVal}\n\n${vibrationalMeaning(nameVal)}\n\n`;
+    if(birthVal !== null){ out += `Birthdate: ${birthDateInput.value}\nCalculated Number: ${birthVal}\n\n${vibrationalMeaning(birthVal)}\n\n`; }
+    resultsEl.textContent = out;
+    resultsEl.focus();
   });
 
-  // ---------- PWA manifest creation using base64 icons (inline) ----------
-  // Example small icons (simple purple circle). Replace with your real base64 icons if desired.
-  const icon192 = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAADACAMAAABaW0lVAAAAVFBMVEX///////9FRUXo6OiUlJTZ2dnX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19eSE9tAAAAHklEQVR4nO3BMQEAAADCIPunNscwAAAAAAAAAAAAAODc4AABp4l2FAAAAdklEQVQY02NgGAWjYBSM7GBAg0xmQxQ0YkzYAAwMDAwMjAwMDAz8DAwMDAwMDIDQwMDAwMDAwMDAwMDAwMDAwMDAwMAwMAQGgABeU0K1xQAAAABJRU5ErkJggg==";
-  const icon512 = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAgAAAAIACAIAAAB7GkOtAAAAA3NCSVQICAjb4U/gAAABG0lEQVR4nO3BMQEAAADCoPVPbQ0PoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA4EcG2AABrXf8TAAAAAElFTkSuQmCC";
+  mobileForm.addEventListener('submit', (e)=>{
+    e.preventDefault();
+    const system = systemSelect.value;
+    const raw = mobileInput.value.trim();
+    if(!raw){ alert('Please enter a mobile number.'); mobileInput.focus(); return; }
+    const num = sumNumbersFromString(raw, system);
+    let out = `Mobile Number Numerology (${system==='c'?'Chaldean':'Pythagorean'})\n\nNumber: ${raw}\nVibrational Number: ${num}\n\n${vibrationalMeaning(num)}\n\nCompatibility and vibrational interaction depend on other charts — use as a guide.`;
+    resultsEl.textContent = out;
+    resultsEl.focus();
+  });
 
-  // Create manifest object
-  const manifestObj = {
-    name: "Numeroscope — Ultimate Numerology Calculator",
-    short_name: "Numeroscope",
-    start_url: ".",
-    display: "standalone",
-    background_color: "#5b3e96",
-    theme_color: "#5b3e96",
-    icons:[
-      { src: icon192, sizes: "192x192", type: "image/png" },
-      { src: icon512, sizes: "512x512", type: "image/png" }
-    ]
-  };
+  angleForm.addEventListener('submit', (e)=>{
+    e.preventDefault();
+    const raw = angleInput.value.trim();
+    if(!raw){ alert('Please enter an angle or repeating number.'); angleInput.focus(); return; }
+    const digits = raw.replace(/\D/g,'');
+    if(!digits){ alert('No digits found.'); return; }
+    let detected = null;
+    if(/^(11)+$/.test(digits)) detected = 11;
+    else if(/^(22)+$/.test(digits)) detected = 22;
+    else if(/^(33)+$/.test(digits)) detected = 33;
+    const value = detected || reduceToOneDigit(Number(digits));
+    let out = `Angle / Repeating Number Analysis\n\nInput: ${raw}\nInterpreted Number: ${value}\n\n${vibrationalMeaning(value)}\n\nPay attention to timing and context when these patterns appear.`;
+    resultsEl.textContent = out;
+    resultsEl.focus();
+  });
 
-  // Attach manifest blob as link so Add to Home Screen sees it
+  licenseForm.addEventListener('submit', (e)=>{
+    e.preventDefault();
+    const system = systemSelect.value;
+    const raw = licenseInput.value.trim();
+    if(!raw){ alert('Please enter a license plate number.'); licenseInput.focus(); return; }
+    const num = sumNumbersFromString(raw, system);
+    let out = `License Plate Reading (${system==='c'?'Chaldean':'Pythagorean'})\n\nPlate: ${raw}\nNumber: ${num}\n\n${vibrationalMeaning(num)}\n\nThis reading offers an energetic snapshot tied to the vehicle and journey it represents.`;
+    resultsEl.textContent = out;
+    resultsEl.focus();
+  });
+
+  productForm.addEventListener('submit', (e)=>{
+    e.preventDefault();
+    const system = systemSelect.value;
+    const raw = productInput.value.trim();
+    if(!raw){ alert('Please enter a product serial number.'); productInput.focus(); return; }
+    const num = sumNumbersFromString(raw, system);
+    let out = `Product Serial Number Analysis (${system==='c'?'Chaldean':'Pythagorean'})\n\nSerial: ${raw}\nNumber: ${num}\n\n${vibrationalMeaning(num)}\n\nUse this as an intuitive guide for product compatibility and energetic profile.`;
+    resultsEl.textContent = out;
+    resultsEl.focus();
+  });
+
+  nameChangeForm.addEventListener('submit', (e)=>{
+    e.preventDefault();
+    const system = systemSelect.value;
+    const original = originalNameInput.value.trim();
+    const test = newNameInput.value.trim();
+    if(!original || !test){ alert('Enter both original and new names.'); return; }
+    const origVal = calculateNameValue(original, system);
+    const testVal = calculateNameValue(test, system);
+    let out = `Name Change Evaluation (${system==='c'?'Chaldean':'Pythagorean'})\n\nOriginal: ${original}\nNumber: ${origVal}\n\n${vibrationalMeaning(origVal)}\n\nNew: ${test}\nNumber: ${testVal}\n\n${vibrationalMeaning(testVal)}\n\n${origVal===testVal ? 'Vibration remains similar — change may feel harmonious.' : 'Vibration differs — expect shifts in personality emphasis and life patterns.'}`;
+    resultsEl.textContent = out;
+    resultsEl.focus();
+  });
+
+  vibrationForm.addEventListener('submit', (e)=>{
+    e.preventDefault();
+    const system = systemSelect.value;
+    const name = vibInput.value.trim();
+    if(!name){ alert('Please enter a name.'); vibInput.focus(); return; }
+    const num = calculateNameValue(name, system);
+    let out = `Name Vibration Check (${system==='c'?'Chaldean':'Pythagorean'})\n\nName: ${name}\nVibration Number: ${num}\n\n${vibrationalMeaning(num)}\n\nCompatibility and success depend on overall chart configurations.`;
+    resultsEl.textContent = out;
+    resultsEl.focus();
+  });
+
+  businessForm.addEventListener('submit', (e)=>{
+    e.preventDefault();
+    const system = systemSelect.value;
+    const name = bizInput.value.trim();
+    if(!name){ alert('Please enter a business or product name.'); bizInput.focus(); return; }
+    const num = calculateNameValue(name, system);
+    let out = `Business / Product Name Check (${system==='c'?'Chaldean':'Pythagorean'})\n\nName: ${name}\nVibration: ${num}\n\n${vibrationalMeaning(num)}\n\nConsider how this vibration aligns with brand mission, target audience, and market positioning.`;
+    resultsEl.textContent = out;
+    resultsEl.focus();
+  });
+
+  /* ----------------- Theme init ----------------- */
+  const themeBtn = document.getElementById('themeBtn');
+  (function initTheme(){
+    const saved = localStorage.getItem('numeroscope-theme') || 'light';
+    if(saved === 'dark'){ document.documentElement.setAttribute('data-theme','dark'); themeBtn.setAttribute('data-theme','dark'); themeBtn.setAttribute('aria-pressed','true'); }
+    else { document.documentElement.removeAttribute('data-theme'); themeBtn.setAttribute('data-theme','light'); themeBtn.setAttribute('aria-pressed','false'); }
+  })();
+  themeBtn.addEventListener('click', ()=>{
+    const current = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+    const next = current === 'dark' ? 'light' : 'dark';
+    if(next === 'dark'){ document.documentElement.setAttribute('data-theme','dark'); themeBtn.setAttribute('data-theme','dark'); themeBtn.setAttribute('aria-pressed','true'); }
+    else { document.documentElement.removeAttribute('data-theme'); themeBtn.setAttribute('data-theme','light'); themeBtn.setAttribute('aria-pressed','false'); }
+    localStorage.setItem('numeroscope-theme', next);
+  });
+
+  /* ----------------- Inline manifest (improves A2HS) ----------------- */
   (function attachManifest(){
-    try{
-      const manifestStr = JSON.stringify(manifestObj);
-      const blob = new Blob([manifestStr], { type: 'application/json' });
+    const icon192 = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAADACAMAAABaW0lVAAAAVFBMVEX///////9FRUXo6OiUlJTZ2dnX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19eSE9tAAAAHklEQVR4nO3BMQEAAADCIPunNscwAAAAAAAAAAAAAODc4AABp4l2FAAAAdklEQVQY02NgGAWjYBSM7GBAg0xmQxQ0YkzYAAwMDAwMjAwMDAz8DAwMDAwMDIDQwMDAwMDAwMDAwMDAwMDAwMDAwMAwMAQGgABeU0K1xQAAAABJRU5ErkJggg==";
+    const icon512 = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAgAAAAIACAIAAAB7GkOtAAAAA3NCSVQICAjb4U/gAAABG0lEQVR4nO3BMQEAAADCoPVPbQ0PoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA4EcG2AABrXf8TAAAAAElFTkSuQmCC";
+    const manifest = {
+      name: "Numeroscope — Ultimate Numerology Calculator",
+      short_name: "Numeroscope",
+      start_url: ".",
+      display: "standalone",
+      background_color: "#5b3e96",
+      theme_color: "#5b3e96",
+      icons: [
+        { src: icon192, sizes: "192x192", type: "image/png" },
+        { src: icon512, sizes: "512x512", type: "image/png" }
+      ]
+    };
+    try {
+      const blob = new Blob([JSON.stringify(manifest)], { type: 'application/json' });
       const url = URL.createObjectURL(blob);
       const link = document.createElement('link');
-      link.rel='manifest';
+      link.rel = 'manifest';
       link.href = url;
       document.head.appendChild(link);
-    }catch(e){
-      console.warn('Could not attach manifest inline:', e);
+    } catch(e) {
+      console.warn('Could not attach manifest inline', e);
     }
   })();
 
-  // ---------- Service Worker registration using a blob URL ----------
-  // The SW caches the page and allows "offline" serving when possible. SW registration requires HTTPS or localhost.
+  /* ----------------- Service worker registration (blob) ----------------- */
   (function registerSW(){
     if(!('serviceWorker' in navigator)) return;
-    // Simple SW script — caches single HTML resource on install and serves it from cache on fetch.
-    const swCode = `
-      const CACHE = 'numeroscope-v1';
+    const swScript = `
+      const CACHE_NAME = 'numeroscope-cache-v1';
       const URLS = ['./'];
       self.addEventListener('install', event => {
-        event.waitUntil(
-          caches.open(CACHE).then(c=>c.addAll(URLS)).catch(()=>{})
-        );
+        event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(URLS)).catch(()=>{}));
         self.skipWaiting();
       });
-      self.addEventListener('activate', event => {
-        event.waitUntil(self.clients.claim());
-      });
+      self.addEventListener('activate', event => event.waitUntil(self.clients.claim()));
       self.addEventListener('fetch', event => {
-        event.respondWith(
-          caches.match(event.request).then(resp => resp || fetch(event.request).catch(()=>caches.match('./')))
-        );
+        event.respondWith(caches.match(event.request).then(resp => resp || fetch(event.request).catch(()=>caches.match('./'))));
       });
     `;
-    const blob = new Blob([swCode], { type: 'application/javascript' });
+    const blob = new Blob([swScript], { type: 'application/javascript' });
     const swUrl = URL.createObjectURL(blob);
-    navigator.serviceWorker.register(swUrl).then(reg=>{
-      console.log('ServiceWorker registered (blob):', reg.scope);
-    }).catch(err=>{
-      console.warn('ServiceWorker registration failed:', err);
+    navigator.serviceWorker.register(swUrl).then(reg => {
+      console.log('Service worker registered (blob):', reg.scope);
+    }).catch(err => {
+      console.warn('Service worker registration failed:', err);
     });
   })();
 
-  // ---------- End of script ----------
+  // End of script
   </script>
 </body>
 </html>
