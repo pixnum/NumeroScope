@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Numeroscope – Ultimate Numerology Calculator</title>
 
+<meta name="theme-color" content="#6a2dad" />
+
 <!-- Favicon 16x16 -->
 <link rel="icon" type="image/png" sizes="16x16" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAM1BMVEUAAAD///////////////////////////////////////////////////////////////////9fwgRMAAAAD3RSTlMAu9Z79NZl4aJ0uD3iRj0ARjCRq4yUAAAARUlEQVQY02NgAAKqAAIBiJIJqCVgFjAI6QBiZJSBE0CgAM0WqAeC0yFCFQlgAIUAa1EA8CMBiEQmARDBQkQqIAZSBvRkH0cAN4LDiQACsbLjYArS5UHgAAAABJRU5ErkJggg==" />
 
@@ -17,422 +19,417 @@
 <!-- Android Chrome Icon 192x192 -->
 <link rel="icon" type="image/png" sizes="192x192" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAADACAMAAABaW0lVAAAAVFBMVEX///////9FRUXo6OiUlJTZ2dnX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19eSE9tAAAEXUlEQVR4nO2d63KiMBRFeQhd8nn//PllGOTYCzZ7va22Wq7sqm+gr6twFzED8pHfZJPExkJkzIxcp2hZ7XGZllZLBQJMqW9hWIFHaYFzySEVtqqDwxyF1ZtoPzDjY8qBTQUjQEdJ0JQ0BgpA7ZoU+POnTKChImqzgcibCK0DyOsEepAwqvFqQXYwi0Be1FUCbXr8vSD1Bj84ZYQrErkVciSOs0XqKUqwQX8xNfUGxBCh1YR8KqaAWwQJKX5wlwuQ6F5+7e6ElWf/QgsohR5TCR3UiuI3XqD3V5QOkiXYgzxoWjj5wviNq2JfOMb7ZlHDkqTqNkZ5C0QZ0PLCIHaeXcwN06C2zERUpm/1lAdLglmsNG56qMROh7RWzLIPVXdhCxLPT+XzBNMOnMeN89PqwLz5X27AZMgXeSioZ54d1IipWDX9V7gRq3ysBj5HMr8RhOX50nEKKZJYfq2nPKHVUQMpARiCRtNxmnOpGuYJozQb6b4COxLVGzKuSrGdw1jKYkRqrKfQzUSgqxlDo2B1mhMJ0pgDFPmvGUZTG1OLY6GE7K7Doy3hhkF7U+3ZfK6MMSe1LCJExkSHEw+37nP5qMVTn15GGq5NfQrEKCezBQuXU8YNb0i5+FcRhrU4vhnH6xH6aOgF5P+n+NQ3/i8+JEXLELUQPCNqXkqUM3yWqFpGnFCymMeODQXkujoXQq66bH7TxuG5OJQjH1+4LgsiWQ4X4apHve72EhhJYhc4qzxqG9vAZZni4ZEPJtKgYy0qxHb3A/kX73LmyERFz2y1lIEQUA+OUIzF5/F+8m4vhYVgA7aTLYQmBVuFQAxLwQ1dDe1dDT2d9dB7P5Sfzpk30A+H/6lj3C+N2EXQZKkE2LkjSd8EPW0Lj7AoQvD7PCi++s+qPfYv/GhGPN/BzZTqcu65DhqU8PzITWEQFwt0L5oXyCQvHqDrxGhMLP0QlQAAAABJRU5ErkJggg==" />
 
+<script type="application/manifest+json">
+{
+  "name": "Numeroscope – Ultimate Numerology Calculator",
+  "short_name": "Numeroscope",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#121212",
+  "theme_color": "#6a2dad",
+  "icons": [
+    {
+      "src": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALAAAACwCAMAAABHjh0SAAAAb1BMVEUAAAD///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////9akmBSAAAENklEQVR4nO2b2XLCIAxFHwO0Bvvaqv//5FZgiEgGmqfN6wMhFZKqQ50p2NwWiFpEb6S70LazULYkgc+gI7s3D6Ey6GzVTTbKU2k6yRGZzGzGcZo7rTJ+lNvlqTLtg4sNUJ2hHvq4+p06ld+UgBz53QjewrU04dZT4iPHs4E1qDm0MgHq2OYDqCipAn+pAyIlSpxegXoHEqLghqJfXqJTrdOB5X0oqIVHKX3UrDuk9LynQvCs6zBclOXQXNzz9D+ZT/DQvJkOj1xLdCnOuP4Ve6FQLMHgUKcd6s49/vm5vfq3fn7p85ZlE5qZ+lRQcVpDTe/t7bWQJpzRxrJr4QvtKy7PIm9iHOZpj73LKPcWGeJ5a8iFzwWtDj+JK76FFNY32GjLxh0Rs3i4iFFvR5Kv3xmJOiyb/AqRoUXvgfvsdPhqPa/8ZFLd3v9czqsl0qL2ZCu7vhKrIqZHg72Hh9n39PFl9rvsEnXcjGszmZ7x5uH7rZoYB+a3HSHX7R60OXRdJh/UHXzxskL+6VNP0mnpy+2oHOMH7YqlL/5G+H9drSz+T4DZYc6ksLxlJAAAAAElFTkSuQmCC",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ]
+}
+</script>
+
 <style>
+  /* Reset */
+  * {
+    box-sizing: border-box;
+  }
   body {
-    font-family: Arial, sans-serif;
-    margin: 1rem;
+    margin: 0; padding: 1rem;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: var(--bg);
     color: var(--text);
-    transition: background-color 0.3s, color 0.3s;
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
+
   :root {
     --bg: #fff;
     --text: #222;
     --primary: #6a2dad;
     --input-bg: #f0f0f0;
-    --btn-bg: #6a2dad;
-    --btn-text: #fff;
+    --input-border: #ccc;
+    --button-bg: #6a2dad;
+    --button-text: #fff;
   }
   [data-theme="dark"] {
     --bg: #121212;
-    --text: #eee;
-    --primary: #9b59b6;
-    --input-bg: #222;
-    --btn-bg: #9b59b6;
-    --btn-text: #fff;
+    --text: #ddd;
+    --input-bg: #1e1e1e;
+    --input-border: #444;
+    --button-bg: #9a6aff;
+    --button-text: #121212;
   }
-  h1 {
+
+  header {
     text-align: center;
-    color: var(--primary);
+    margin-bottom: 1rem;
   }
-  .container {
-    max-width: 600px;
-    margin: auto;
+
+  h1 {
+    margin-bottom: 0.25rem;
   }
+
+  .toggle-darkmode {
+    cursor: pointer;
+    background-color: var(--button-bg);
+    color: var(--button-text);
+    border: none;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    border-radius: 4px;
+  }
+
   label {
     display: block;
-    margin-top: 1rem;
+    margin-top: 0.5rem;
+    font-weight: bold;
   }
-  input, select, button, textarea {
+
+  input, select, textarea {
     width: 100%;
     padding: 0.5rem;
-    margin-top: 0.3rem;
-    border: 1px solid #ccc;
+    margin-top: 0.25rem;
+    border: 1px solid var(--input-border);
     border-radius: 4px;
-    background: var(--input-bg);
+    background-color: var(--input-bg);
     color: var(--text);
+    font-size: 1rem;
   }
+
+  textarea {
+    min-height: 150px;
+    font-family: monospace;
+    white-space: pre-wrap;
+  }
+
   button {
-    background-color: var(--btn-bg);
-    color: var(--btn-text);
+    margin-top: 0.75rem;
+    background-color: var(--button-bg);
+    color: var(--button-text);
     border: none;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    border-radius: 4px;
     cursor: pointer;
-    font-weight: bold;
-    margin-top: 1rem;
   }
+
   button:hover {
     opacity: 0.9;
   }
-  textarea {
-    font-family: monospace;
-    white-space: pre-wrap;
-    min-height: 150px;
+
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
   }
-  .toggle-switch {
-    margin-top: 1rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
+
+  @media (max-width: 720px) {
+    .grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  fieldset {
+    border: 1px solid var(--input-border);
+    border-radius: 6px;
+    padding: 1rem;
+  }
+
+  legend {
+    font-weight: bold;
+    padding: 0 0.5rem;
   }
 </style>
 </head>
 <body>
 
-<h1>Numeroscope – Ultimate Numerology Calculator</h1>
-<div class="container" role="main">
+<header>
+  <h1>Numeroscope – Ultimate Numerology Calculator</h1>
+  <button class="toggle-darkmode" aria-pressed="false" id="darkModeToggle">Toggle Dark Mode</button>
+</header>
 
-  <div class="toggle-switch">
-    <label for="darkModeToggle">Dark Mode:</label>
-    <input type="checkbox" id="darkModeToggle" aria-checked="false" role="switch" />
-  </div>
-
-  <label for="numerologySystem">Select Numerology System:</label>
+<section>
+  <label for="numerologySystem">Choose Numerology System:</label>
   <select id="numerologySystem" aria-label="Numerology System">
-    <option value="p">Pythagorean</option>
+    <option value="p" selected>Pythagorean</option>
     <option value="c">Chaldean</option>
   </select>
+</section>
 
-  <!-- Full Name Calculator -->
-  <label for="fullName">Full Name (for calculation):</label>
-  <input type="text" id="fullName" aria-describedby="fullNameDesc" />
-  <div id="fullNameDesc" class="sr-only">Enter your full name to calculate numerology number.</div>
-  <label for="birthDate">Birthdate (optional):</label>
-  <input type="date" id="birthDate" />
-  <button id="calcNameBtn">Calculate Full Name Numerology</button>
+<div class="grid">
 
-  <!-- Mobile Number Numerology -->
-  <label for="mobileNumber">Mobile Number:</label>
-  <input type="tel" id="mobileNumber" />
-  <button id="calcMobileBtn">Analyze Mobile Number</button>
+  <fieldset>
+    <legend>Full Name Calculator</legend>
+    <label for="fullName">Full Name:</label>
+    <input id="fullName" type="text" placeholder="Enter full name" aria-describedby="fullNameHelp" />
+    <label for="birthDate">Birthdate (optional):</label>
+    <input id="birthDate" type="date" aria-describedby="birthDateHelp" />
+    <button id="calcNameBtn">Calculate</button>
+  </fieldset>
 
-  <!-- Angle / Repeating Numbers -->
-  <label for="angleNumber">Angle or Repeating Number (e.g. 11:11, 222):</label>
-  <input type="text" id="angleNumber" />
-  <button id="calcAngleBtn">Analyze Angle Number</button>
+  <fieldset>
+    <legend>Mobile Number Numerology</legend>
+    <label for="mobileNumber">Mobile Number:</label>
+    <input id="mobileNumber" type="tel" placeholder="Enter mobile number" />
+    <button id="calcMobileBtn">Calculate</button>
+  </fieldset>
 
-  <!-- License Plate Number -->
-  <label for="licensePlate">License Plate Number:</label>
-  <input type="text" id="licensePlate" />
-  <button id="calcLicenseBtn">Analyze License Plate</button>
+  <fieldset>
+    <legend>Angle / Repeating Numbers Analyzer</legend>
+    <label for="angleNumber">Angle Number (e.g., 11:11, 222):</label>
+    <input id="angleNumber" type="text" placeholder="Enter angle number" />
+    <button id="calcAngleBtn">Analyze</button>
+  </fieldset>
 
-  <!-- Product Serial Number -->
-  <label for="productSerial">Product Serial Number:</label>
-  <input type="text" id="productSerial" />
-  <button id="calcProductBtn">Analyze Product Serial</button>
+  <fieldset>
+    <legend>License Plate Number Reading</legend>
+    <label for="licensePlate">License Plate Number:</label>
+    <input id="licensePlate" type="text" placeholder="Enter license plate number" />
+    <button id="calcLicenseBtn">Analyze</button>
+  </fieldset>
 
-  <!-- Name Change Evaluator -->
-  <label for="originalName">Original Name:</label>
-  <input type="text" id="originalName" />
-  <label for="testName">Test New Name:</label>
-  <input type="text" id="testName" />
-  <button id="calcNameChangeBtn">Evaluate Name Change</button>
+  <fieldset>
+    <legend>Product Serial Number Analyzer</legend>
+    <label for="productSerial">Product Serial Number:</label>
+    <input id="productSerial" type="text" placeholder="Enter product serial number" />
+    <button id="calcProductBtn">Analyze</button>
+  </fieldset>
 
-  <!-- Name Vibration Checker -->
-  <label for="vibrationName">Name Vibration Check:</label>
-  <input type="text" id="vibrationName" />
-  <button id="calcVibrationBtn">Check Name Vibration</button>
+  <fieldset>
+    <legend>Name Change Evaluator</legend>
+    <label for="originalName">Original Name:</label>
+    <input id="originalName" type="text" placeholder="Original name" />
+    <label for="testName">New Name:</label>
+    <input id="testName" type="text" placeholder="Test new name spelling" />
+    <button id="calcNameChangeBtn">Evaluate</button>
+  </fieldset>
 
-  <!-- Business/Product Name Checker -->
-  <label for="businessName">Business/Product Name:</label>
-  <input type="text" id="businessName" />
-  <button id="calcBusinessBtn">Check Business/Product Name</button>
+  <fieldset>
+    <legend>Name Vibration Checker</legend>
+    <label for="vibrationName">Name:</label>
+    <input id="vibrationName" type="text" placeholder="Enter name" />
+    <button id="calcVibrationBtn">Check Vibration</button>
+  </fieldset>
 
-  <label for="results">Results:</label>
-  <textarea id="results" readonly aria-live="polite"></textarea>
+  <fieldset>
+    <legend>Business/Product Name Checker</legend>
+    <label for="businessName">Business/Product Name:</label>
+    <input id="businessName" type="text" placeholder="Enter business or product name" />
+    <button id="calcBusinessBtn">Check Name</button>
+  </fieldset>
 
 </div>
 
+<section>
+  <label for="results">Analysis Report:</label>
+  <textarea id="results" readonly aria-live="polite" aria-label="Analysis Report"></textarea>
+</section>
+
 <script>
-  // Dark Mode toggle
-  const toggle = document.getElementById('darkModeToggle');
-  toggle.addEventListener('change', () => {
-    if (toggle.checked) {
-      document.documentElement.setAttribute('data-theme', 'dark');
-      toggle.setAttribute('aria-checked', 'true');
-    } else {
+  // Dark Mode Toggle
+  const toggleBtn = document.getElementById('darkModeToggle');
+  toggleBtn.addEventListener('click', () => {
+    const currentTheme = document.documentElement.getAttribute('data-theme');
+    if (currentTheme === 'dark') {
       document.documentElement.removeAttribute('data-theme');
-      toggle.setAttribute('aria-checked', 'false');
+      toggleBtn.setAttribute('aria-pressed', 'false');
+    } else {
+      document.documentElement.setAttribute('data-theme', 'dark');
+      toggleBtn.setAttribute('aria-pressed', 'true');
     }
   });
 
-  // Numerology maps
-  function getNumerologyMap(system) {
-    if (system === 'c') {
-      return { a:1,b:2,c:3,d:4,e:5,f:8,g:3,h:5,i:1,j:1,k:2,l:3,m:4,n:5,o:7,p:8,q:1,r:2,s:3,t:4,u:6,v:6,w:6,x:5,y:1,z:7 };
-    }
-    // Default Pythagorean
-    return { a:1,b:2,c:3,d:4,e:5,f:6,g:7,h:8,i:9,j:1,k:2,l:3,m:4,n:5,o:6,p:7,q:8,r:9,s:1,t:2,u:3,v:4,w:5,x:6,y:7,z:8 };
+  // Numerology Maps
+  const pythagoreanMap = {
+    a:1,b:2,c:3,d:4,e:5,f:6,g:7,h:8,i:9,
+    j:1,k:2,l:3,m:4,n:5,o:6,p:7,q:8,r:9,
+    s:1,t:2,u:3,v:4,w:5,x:6,y:7,z:8
+  };
+
+  const chaldeanMap = {
+    a:1,b:2,c:3,d:4,e:5,f:8,g:3,h:5,i:1,
+    j:1,k:2,l:3,m:4,n:5,o:7,p:8,q:1,r:2,
+    s:3,t:4,u:6,v:6,w:6,x:5,y:1,z:7
+  };
+
+  // Utilities
+  function sumDigits(num) {
+    return num.toString().split('').reduce((a,b)=>a+Number(b),0);
   }
 
-  // Reduce number to one digit or master numbers 11,22,33
   function reduceToOneDigit(num) {
-    if ([11,22,33].includes(num)) return num;
-    while (num > 9) {
-      num = num.toString().split('').reduce((a,b) => a + +b, 0);
-      if ([11,22,33].includes(num)) return num;
+    while(num > 9 && num !== 11 && num !== 22 && num !== 33) {
+      num = sumDigits(num);
     }
     return num;
   }
 
-  // Detailed meanings for numbers (for name, license plate, product, business)
-  const detailedMeanings = {
-    1: { title:"1 – Leader & Pioneer", description:"You are independent, assertive, and have a pioneering spirit. Challenges may include impatience and stubbornness. Focus on confidence and originality to succeed." },
-    2: { title:"2 – Diplomat & Peacemaker", description:"You are cooperative, sensitive, and excel in partnerships. Sometimes you may feel indecisive. Cultivate patience and empathy for harmony." },
-    3: { title:"3 – Creative & Expressive", description:"You have a joyful, creative nature with great communication skills. Beware of scattering energy or superficiality. Use your talents to inspire." },
-    4: { title:"4 – Practical & Hardworking", description:"You value stability and discipline, building solid foundations. You may sometimes be rigid or overly cautious. Balance work and play." },
-    5: { title:"5 – Adventurous & Freedom Lover", description:"You crave freedom and variety. Restlessness may bring challenges. Channel your energy into new experiences and learning." },
-    6: { title:"6 – Nurturer & Protector", description:"You are responsible and caring, often a family or community pillar. Avoid overburdening yourself and practice self-care." },
-    7: { title:"7 – Thinker & Seeker", description:"You are introspective, analytical, and spiritual. Sometimes you may isolate yourself. Embrace your intuition and seek deeper truths." },
-    8: { title:"8 – Ambitious & Executive", description:"You are goal-oriented with business acumen. Watch for workaholism or materialism. Balance ambition with ethics." },
-    9: { title:"9 – Humanitarian & Idealist", description:"You are compassionate and generous, with a broad vision. Beware of being overly idealistic or self-sacrificing. Focus on practical help." },
-    11: { title:"11 – Spiritual Messenger", description:"You possess intuition and inspiration. Life may feel intense and challenging. Use your vision to uplift others." },
-    22: { title:"22 – Master Builder", description:"You have great potential to turn dreams into reality. Requires discipline and practical planning. Your work can impact many." },
-    33: { title:"33 – Master Teacher", description:"You call for service, compassion, and higher teaching. Often a healer and guide, reflect on how to uplift others." }
-  };
-
-  // Detailed meanings for angle/repeating numbers
-  const detailedAngleMeanings = {
-    "11:11": {
-      title: "11:11 – Awakening Portal",
-      description: `A powerful moment for manifestation and spiritual awakening.
-Notice your thoughts; focus on positive intentions.`
-    },
-    "22:22": {
-      title: "22:22 – Master Builder Alignment",
-      description: `Indicates a time to focus on your goals with discipline.
-Trust your process and be patient with progress.`
-    },
-    "33:33": {
-      title: "33:33 – Master Teacher Energy",
-      description: `Calls for service, compassion, and higher teaching.
-Often indicates a time for healing and guiding others.
-Reflect on how you can uplift those around you.`
-    },
-    "111": {
-      title: "111 – New Beginnings",
-      description: `Manifestation number representing fresh starts and creation.
-Be aware of your thoughts as they rapidly manifest.`
-    },
-    "222": {
-      title: "222 – Balance & Harmony",
-      description: `Encourages trust and faith.
-Focus on partnership and patience.`
-    },
-    "333": {
-      title: "333 – Support & Encouragement",
-      description: `Your angels and guides are near.
-You are supported in your endeavors.`
-    },
-    "444": {
-      title: "444 – Protection & Stability",
-      description: `A sign your foundation is solid.
-Keep working hard; you're on the right path.`
-    },
-    "555": {
-      title: "555 – Change & Transformation",
-      description: `Big shifts are coming.
-Embrace change with an open mind.`
-    },
-  };
-
-  // Helpers
-  function cleanString(str) {
-    return str.toLowerCase().replace(/[^a-z]/g, '');
-  }
-
-  function sumNumbers(nums) {
-    return nums.reduce((a,b) => a + b, 0);
-  }
-
-  function calculateNameNumber(name, system) {
-    const map = getNumerologyMap(system);
-    const clean = cleanString(name);
-    if (!clean) return null;
+  function calculateNameValue(name, system) {
+    const map = system === 'c' ? chaldeanMap : pythagoreanMap;
     let total = 0;
-    for (let ch of clean) {
+    name = name.toLowerCase().replace(/[^a-z]/g,'');
+    for (const ch of name) {
       total += map[ch] || 0;
     }
     return reduceToOneDigit(total);
   }
 
-  function analyzeNumber(numberStr) {
-    let num = parseInt(numberStr.replace(/\D/g, ''), 10);
-    if (isNaN(num)) return null;
-    return reduceToOneDigit(num);
+  function birthdateValue(dateStr) {
+    if (!dateStr) return null;
+    const parts = dateStr.split('-');
+    if(parts.length!==3) return null;
+    let sum = 0;
+    parts.forEach(p=>{
+      sum += sumDigits(p);
+    });
+    return reduceToOneDigit(sum);
   }
 
-  // Report generators
+  function vibrationalMeaning(num) {
+    // Simple sample meanings
+    const meanings = {
+      1: "Leadership, independence, new beginnings.",
+      2: "Diplomacy, cooperation, balance.",
+      3: "Creativity, communication, joy.",
+      4: "Stability, practicality, hard work.",
+      5: "Freedom, adventure, change.",
+      6: "Responsibility, nurturing, harmony.",
+      7: "Spirituality, introspection, wisdom.",
+      8: "Power, ambition, success.",
+      9: "Compassion, humanitarianism, completion.",
+      11: "Intuition, inspiration, enlightenment.",
+      22: "Master builder, large endeavors, leadership.",
+      33: "Master teacher, compassion, blessings."
+    };
+    return meanings[num] || "Unique or undefined vibrational meaning.";
+  }
 
-  function generateFullNameReport(name, system, birthdate) {
-    const num = calculateNameNumber(name, system);
-    if (num === null) return "Please enter a valid name.";
-    let report = `Full Name Numerology (${system === 'c' ? 'Chaldean' : 'Pythagorean'} System):\n`;
-    report += `Name: ${name}\nCalculated Number: ${num}\n\n`;
-    if (detailedMeanings[num]) {
-      report += `${detailedMeanings[num].title}\n${detailedMeanings[num].description}\n\n`;
-    } else {
-      report += `No detailed meaning found.\n\n`;
+  function analyzeAngleNumber(numStr) {
+    // Check for repeating digits or special patterns
+    if (!numStr) return "No input.";
+    const clean = numStr.replace(/[^0-9:]/g, '');
+    if (/^(\d)\1+$/.test(clean.replace(':',''))) {
+      return `Repeating number ${clean} signifies focus and alignment.`;
     }
-    if (birthdate) {
-      const bdNum = birthdate.split('-').join('');
-      const bdTotal = bdNum.split('').reduce((a,b) => a + +b, 0);
-      const bdReduced = reduceToOneDigit(bdTotal);
-      report += `Birthdate Numerology:\n${birthdate} → Reduced Number: ${bdReduced}\n`;
-      if (detailedMeanings[bdReduced]) {
-        report += `${detailedMeanings[bdReduced].title}\n${detailedMeanings[bdReduced].description}\n`;
+    if (clean.includes(':')) {
+      const parts = clean.split(':');
+      if (parts.length === 2 && parts[0] === parts[1]) {
+        return `Angel number ${clean} indicates synchronicity and spiritual messages.`;
       }
     }
-    return report;
+    return "No special angle number pattern detected.";
   }
 
-  function generateMobileNumberReport(mobile, system) {
-    if (!mobile || mobile.length < 6) return "Please enter a valid mobile number.";
-    const num = analyzeNumber(mobile);
-    if (num === null) return "Invalid number format.";
-    let report = `Mobile Number Numerology (${system === 'c' ? 'Chaldean' : 'Pythagorean'}):\nNumber: ${mobile}\nVibrational Number: ${num}\n\n`;
-    if (detailedMeanings[num]) {
-      report += `${detailedMeanings[num].title}\n${detailedMeanings[num].description}\n\n`;
-    }
-    report += `Compatibility and vibrational analysis is complex and depends on individual charts.\nUse this as an intuitive guide.`;
-    return report;
+  function analyzeLicensePlate(plate, system) {
+    if (!plate) return "No license plate number entered.";
+    const val = calculateNameValue(plate, system);
+    return `License Plate Number '${plate}' vibrational value is ${val}. Meaning: ${vibrationalMeaning(val)}`;
   }
 
-  function generateAngleNumberReport(angleNum) {
-    if (!angleNum) return "Please enter an angle or repeating number.";
-    const key = angleNum.trim();
-    if (detailedAngleMeanings[key]) {
-      return `Angle Number Analysis: ${key}\n${detailedAngleMeanings[key].title}\n${detailedAngleMeanings[key].description}`;
-    }
-    // Generic reduction if no exact match
-    const reduced = reduceToOneDigit(parseInt(key.replace(/[^0-9]/g,''),10));
-    if (detailedMeanings[reduced]) {
-      return `Angle Number Analysis (Reduced):\nNumber: ${reduced}\n${detailedMeanings[reduced].title}\n${detailedMeanings[reduced].description}`;
-    }
-    return "No specific meaning found for this angle number.";
+  function analyzeProductSerial(serial, system) {
+    if (!serial) return "No product serial number entered.";
+    const val = calculateNameValue(serial, system);
+    return `Product Serial Number '${serial}' vibrational value is ${val}. Meaning: ${vibrationalMeaning(val)}`;
   }
 
-  function generateLicensePlateReport(plate, system) {
-    if (!plate) return "Please enter a license plate number.";
-    const num = calculateNameNumber(plate, system);
-    if (num === null) return "Invalid license plate input.";
-    let report = `License Plate Number Analysis (${system === 'c' ? 'Chaldean' : 'Pythagorean'}):\nPlate: ${plate}\nNumber: ${num}\n\n`;
-    if (detailedMeanings[num]) {
-      report += `${detailedMeanings[num].title}\n${detailedMeanings[num].description}`;
-    }
-    return report;
-  }
-
-  function generateProductSerialReport(serial, system) {
-    if (!serial) return "Please enter a product serial number.";
-    const num = calculateNameNumber(serial, system);
-    if (num === null) return "Invalid product serial input.";
-    let report = `Product Serial Number Analysis (${system === 'c' ? 'Chaldean' : 'Pythagorean'}):\nSerial: ${serial}\nNumber: ${num}\n\n`;
-    if (detailedMeanings[num]) {
-      report += `${detailedMeanings[num].title}\n${detailedMeanings[num].description}`;
-    }
-    return report;
-  }
-
-  function generateNameChangeReport(original, testName, system) {
-    if (!original || !testName) return "Please enter both original and test names.";
-    const origNum = calculateNameNumber(original, system);
-    const testNum = calculateNameNumber(testName, system);
-    if (origNum === null || testNum === null) return "Invalid names entered.";
-    let report = `Name Change Evaluation (${system === 'c' ? 'Chaldean' : 'Pythagorean'}):\nOriginal Name: ${original} → Number: ${origNum}\nNew Name: ${testName} → Number: ${testNum}\n\n`;
-    report += `Original Meaning:\n${detailedMeanings[origNum]?.description || 'No meaning found.'}\n\n`;
-    report += `New Name Meaning:\n${detailedMeanings[testNum]?.description || 'No meaning found.'}\n\n`;
-    if (origNum === testNum) {
-      report += "The vibration number remains the same. Change might not bring significant energetic difference.";
-    } else {
-      report += "The vibration number has changed. This could influence your personality and destiny aspects.";
-    }
-    return report;
-  }
-
-  function generateNameVibrationReport(name, system) {
-    if (!name) return "Please enter a name.";
-    const num = calculateNameNumber(name, system);
-    if (num === null) return "Invalid name input.";
-    let report = `Name Vibration Check (${system === 'c' ? 'Chaldean' : 'Pythagorean'}):\nName: ${name}\nVibration Number: ${num}\n\n`;
-    if (detailedMeanings[num]) {
-      report += `${detailedMeanings[num].title}\n${detailedMeanings[num].description}`;
-    }
-    return report;
-  }
-
-  function generateBusinessNameReport(name, system) {
-    if (!name) return "Please enter a business or product name.";
-    const num = calculateNameNumber(name, system);
-    if (num === null) return "Invalid input.";
-    let report = `Business/Product Name Check (${system === 'c' ? 'Chaldean' : 'Pythagorean'}):\nName: ${name}\nVibration Number: ${num}\n\n`;
-    report += `This number indicates the energetic vibration your brand projects.\n`;
-    if (detailedMeanings[num]) {
-      report += `${detailedMeanings[num].title}\n${detailedMeanings[num].description}`;
-    }
-    return report;
-  }
-
-  // Event Listeners for buttons
-
+  // Event handlers for buttons
   document.getElementById('calcNameBtn').addEventListener('click', () => {
     const name = document.getElementById('fullName').value.trim();
-    const bd = document.getElementById('birthDate').value.trim();
+    const bdate = document.getElementById('birthDate').value;
     const system = document.getElementById('numerologySystem').value;
-    document.getElementById('results').value = generateFullNameReport(name, system, bd);
+    if (!name) {
+      alert("Please enter a full name.");
+      return;
+    }
+    const nameVal = calculateNameValue(name, system);
+    const bVal = birthdateValue(bdate);
+    let report = `Full Name: ${name}\nSystem: ${system === 'c' ? 'Chaldean' : 'Pythagorean'}\nNumerology Value: ${nameVal}\nMeaning: ${vibrationalMeaning(nameVal)}\n`;
+    if (bVal) {
+      report += `Birthdate Numerology: ${bVal}\nMeaning: ${vibrationalMeaning(bVal)}\n`;
+    }
+    document.getElementById('results').value = report;
   });
 
   document.getElementById('calcMobileBtn').addEventListener('click', () => {
     const mobile = document.getElementById('mobileNumber').value.trim();
     const system = document.getElementById('numerologySystem').value;
-    document.getElementById('results').value = generateMobileNumberReport(mobile, system);
+    if (!mobile) {
+      alert("Please enter a mobile number.");
+      return;
+    }
+    const val = calculateNameValue(mobile, system);
+    const report = `Mobile Number: ${mobile}\nNumerology Value: ${val}\nMeaning: ${vibrationalMeaning(val)}\nCompatibility: Compatible with numbers sharing the same vibration.`;
+    document.getElementById('results').value = report;
   });
 
   document.getElementById('calcAngleBtn').addEventListener('click', () => {
-    const angle = document.getElementById('angleNumber').value.trim();
-    document.getElementById('results').value = generateAngleNumberReport(angle);
+    const angleNum = document.getElementById('angleNumber').value.trim();
+    const analysis = analyzeAngleNumber(angleNum);
+    document.getElementById('results').value = `Angle/Repeating Number: ${angleNum}\nAnalysis: ${analysis}`;
   });
 
   document.getElementById('calcLicenseBtn').addEventListener('click', () => {
     const plate = document.getElementById('licensePlate').value.trim();
     const system = document.getElementById('numerologySystem').value;
-    document.getElementById('results').value = generateLicensePlateReport(plate, system);
+    const analysis = analyzeLicensePlate(plate, system);
+    document.getElementById('results').value = analysis;
   });
 
   document.getElementById('calcProductBtn').addEventListener('click', () => {
     const serial = document.getElementById('productSerial').value.trim();
     const system = document.getElementById('numerologySystem').value;
-    document.getElementById('results').value = generateProductSerialReport(serial, system);
+    const analysis = analyzeProductSerial(serial, system);
+    document.getElementById('results').value = analysis;
   });
 
   document.getElementById('calcNameChangeBtn').addEventListener('click', () => {
     const original = document.getElementById('originalName').value.trim();
-    const testName = document.getElementById('testName').value.trim();
+    const test = document.getElementById('testName').value.trim();
     const system = document.getElementById('numerologySystem').value;
-    document.getElementById('results').value = generateNameChangeReport(original, testName, system);
+    if (!original || !test) {
+      alert("Please enter both original and new names.");
+      return;
+    }
+    const originalVal = calculateNameValue(original, system);
+    const testVal = calculateNameValue(test, system);
+    const report = `Original Name: ${original}\nValue: ${originalVal}\nMeaning: ${vibrationalMeaning(originalVal)}\n\n` +
+                   `New Name: ${test}\nValue: ${testVal}\nMeaning: ${vibrationalMeaning(testVal)}\n\n` +
+                   `Change Impact: ${(originalVal === testVal) ? "No significant change." : "Name vibration has changed."}`;
+    document.getElementById('results').value = report;
   });
 
   document.getElementById('calcVibrationBtn').addEventListener('click', () => {
     const name = document.getElementById('vibrationName').value.trim();
     const system = document.getElementById('numerologySystem').value;
-    document.getElementById('results').value = generateNameVibrationReport(name, system);
+    if (!name) {
+      alert("Please enter a name.");
+      return;
+    }
+    const val = calculateNameValue(name, system);
+    const report = `Name: ${name}\nVibration Value: ${val}\nPersonality and Success Meaning: ${vibrationalMeaning(val)}\nCompatibility: Compatible with names sharing this vibration.`;
+    document.getElementById('results').value = report;
   });
 
   document.getElementById('calcBusinessBtn').addEventListener('click', () => {
     const name = document.getElementById('businessName').value.trim();
     const system = document.getElementById('numerologySystem').value;
-    document.getElementById('results').value = generateBusinessNameReport(name, system);
+    if (!name) {
+      alert("Please enter a business or product name.");
+      return;
+    }
+    const val = calculateNameValue(name, system);
+    const report = `Business/Product Name: ${name}\nNumerology Value: ${val}\nBrand Validation Meaning: ${vibrationalMeaning(val)}`;
+    document.getElementById('results').value = report;
   });
-</script>
 
+</script>
 </body>
 </html>
