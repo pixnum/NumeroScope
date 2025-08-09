@@ -1,253 +1,356 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" >
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Numeroscope – Ultimate Numerology Calculator</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <title>Numeroscope – Ultimate Numerology Calculator</title>
+  <meta name="theme-color" content="#6a2dad" />
 
-<meta name="theme-color" content="#6a2dad" />
+  <link rel="icon" type="image/png" sizes="16x16" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAM1BMVEUAAAD///////////////////////////////////////////////////////////////////9fwgRMAAAAD3RSTlMAu9Z79NZl4aJ0uD3iRj0ARjCRq4yUAAAARUlEQVQY02NgAAKqAAIBiJIJqCVgFjAI6QBiZJSBE0CgAM0WqAeC0yFCFQlgAIUAa1EA8CMBiEQmARDBQkQqIAZSBvRkH0cAN4LDiQACsbLjYArS5UHgAAAABJRU5ErkJggg==" />
+  <link rel="icon" type="image/png" sizes="32x32" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAAXVBMVEUAAAD///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////9gUkQXAAAAGnRSTlMA6LnhXwoOayvf90nb4SvBzE0IlP52S+YQkpRkAAABeSURBVHjaY2AgBooYmJhIpKhoaGiGgYGBkYmRiqAqqqqurq6uDh4eHi4eLj4+Ph4+Ph4eHg4ODi4uLg4ODi4uLg4ODi4uLg4ODi4uLh5eVlZFWWVkZGRkWEDAVdJYEl0AVO1C7qugQWozkAMJe+P4AOj/AVFoQfZqgOKABQAAkADd7FJxQAAAABJRU5ErkJggg==" />
+  <link rel="apple-touch-icon" sizes="180x180" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALAAAACwCAMAAABHjh0SAAAAb1BMVEUAAAD///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////9akmBSAAAENklEQVR4nO2b2XLCIAxFHwO0Bvvaqv//5FZgiEgGmqfN6wMhFZKqQ50p2NwWiFpEb6S70LazULYkgc+gI7s3D6Ey6GzVTTbKU2k6yRGZzGzGcZo7rTJ+lNvlqTLtg4sNUJ2hHvq4+p06ld+UgBz53QjewrU04dZT4iPHs4E1qDm0MgHq2OYDqCipAn+pAyIlSpxegXoHEqLghqJfXqJTrdOB5X0oqIVHKX3UrDuk9LynQvCs6zBclOXQXNzz9D+ZT/DQvJkOj1xLdCnOuP4Ve6FQLMHgUKcd6s49/vm5vfq3fn7p85ZlE5qZ+lRQcVpDTe/t7bWQJpzRxrJr4QvtKy7PIm9iHOZpj73LKPcWGeJ5a8iFzwWtDj+JK76FFNY32GjLxh0Rs3i4iFFvR5Kv3xmJOiyb/AqRoUXvgfvsdPhqPa/8ZFLd3v9czqsl0qL2ZCu7vhKrIqZHg72Hh9n39PFl9rvsEnXcjGszmZ7x5uH7rZoYB+a3HSHX7R60OXRdJh/UHXzxskL+6VNP0mnpy+2oHOMH7YqlL/5G+H9drSz+T4DZYc6ksLxlJAAAAAElFTkSuQmCC" />
+  <link rel="icon" type="image/png" sizes="192x192" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAADACAMAAABaW0lVAAAAVFBMVEX///////9FRUXo6OiUlJTZ2dnX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19eSE9tAAAEXUlEQVR4nO2d63KiMBRFeQhd8nn//PllGOTYCzZ7va22Wq7sqm+gr6twFzED8pHfZJPExkJkzIxcp2hZ7XGZllZLBQJMqW9hWIFHaYFzySEVtqqDwxyF1ZtoPzDjY8qBTQUjQEdJ0JQ0BgpA7ZoU+POnTKChImqzgcibCK0DyOsEepAwqvFqQXYwi0Be1FUCbXr8vSD1Bj84ZYQrErkVciSOs0XqKUqwQX8xNfUGxBCh1YR8KqaAWwQJKX5wlwuQ6F5+7e6ElWf/QgsohR5TCR3UiuI3XqD3V5QOkiXYgzxoWjj5wviNq2JfOMb7ZlHDkqTqNkZ5C0QZ0PLCIHaeXcwN06C2zERUpm/1lAdLglmsNG56qMROh7RWzLIPVXdhCxLPT+XzBNMOnMeN89PqwLz5X27AZMgXeSioZ54d1IipWDX9V7gRq3ysBj5HMr8RhOX50nEKKZJYfq2nPKHVUQMpARiCRtNxmnOpGuYJozQb6b4COxLVGzKuSrGdw1jKYkRqrKfQzUSgqxlDo2B1mhMJ0pgDFPmvGUZTG1OLY6GE7K7Doy3hhkF7U+3ZfK6MMSe1LCJExkSHEw+37nP5qMVTn15GGq5NfQrEKCezBQuXU8YNb0i5+FcRhrU4vhnH6xH6aOgF5P+n+NQ3/i8+JEXLELUQPCNqXkqUM3yWqFpGnFCymMeODQXkujoXQq66bH7TxuG5OJQjH1+4LgsiWQ4X4apHve72EhhJYhc4qzxqG9vAZZni4ZEPJtKgYy0qxHb3A/kX73LmyERFz2y1lIEQUA+OUIzF5/F+8m4vhYVgA7aTLYQmBVuFQAxLwQ1dDe1dDT2d9dB7P5Sfzpk30A+H/6lj3C+N2EXQZKkE2LkjSd8EPW0Lj7AoQvD7PCi++s+qPfYv/GhGPN/BzZTqcu65DhqU8PzITWEQFwt0L5oXyCQvHqDrxGhMLP0QlQAAAABJRU5ErkJggg==" />
 
-<!-- Favicon 16x16 -->
-<link rel="icon" type="image/png" sizes="16x16" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAM1BMVEUAAAD///////////////////////////////////////////////////////////////////9fwgRMAAAAD3RSTlMAu9Z79NZl4aJ0uD3iRj0ARjCRq4yUAAAARUlEQVQY02NgAAKqAAIBiJIJqCVgFjAI6QBiZJSBE0CgAM0WqAeC0yFCFQlgAIUAa1EA8CMBiEQmARDBQkQqIAZSBvRkH0cAN4LDiQACsbLjYArS5UHgAAAABJRU5ErkJggg==" />
-
-<!-- Favicon 32x32 -->
-<link rel="icon" type="image/png" sizes="32x32" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAAXVBMVEUAAAD///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////9gUkQXAAAAGnRSTlMA6LnhXwoOayvf90nb4SvBzE0IlP52S+YQkpRkAAABeSURBVHjaY2AgBooYmJhIpKhoaGiGgYGBkYmRiqAqqqqurq6uDh4eHi4eLj4+Ph4+Ph4eHg4ODi4uLg4ODi4uLg4ODi4uLg4ODi4uLh5eVlZFWWVkZGRkWEDAVdJYEl0AVO1C7qugQWozkAMJe+P4AOj/AVFoQfZqgOKABQAAkADd7FJxQAAAABJRU5ErkJggg==" />
-
-<!-- Apple Touch Icon 180x180 -->
-<link rel="apple-touch-icon" sizes="180x180" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALAAAACwCAMAAABHjh0SAAAAb1BMVEUAAAD///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////9akmBSAAAENklEQVR4nO2b2XLCIAxFHwO0Bvvaqv//5FZgiEgGmqfN6wMhFZKqQ50p2NwWiFpEb6S70LazULYkgc+gI7s3D6Ey6GzVTTbKU2k6yRGZzGzGcZo7rTJ+lNvlqTLtg4sNUJ2hHvq4+p06ld+UgBz53QjewrU04dZT4iPHs4E1qDm0MgHq2OYDqCipAn+pAyIlSpxegXoHEqLghqJfXqJTrdOB5X0oqIVHKX3UrDuk9LynQvCs6zBclOXQXNzz9D+ZT/DQvJkOj1xLdCnOuP4Ve6FQLMHgUKcd6s49/vm5vfq3fn7p85ZlE5qZ+lRQcVpDTe/t7bWQJpzRxrJr4QvtKy7PIm9iHOZpj73LKPcWGeJ5a8iFzwWtDj+JK76FFNY32GjLxh0Rs3i4iFFvR5Kv3xmJOiyb/AqRoUXvgfvsdPhqPa/8ZFLd3v9czqsl0qL2ZCu7vhKrIqZHg72Hh9n39PFl9rvsEnXcjGszmZ7x5uH7rZoYB+a3HSHX7R60OXRdJh/UHXzxskL+6VNP0mnpy+2oHOMH7YqlL/5G+H9drSz+T4DZYc6ksLxlJAAAAAElFTkSuQmCC" />
-
-<!-- Android Chrome Icon 192x192 -->
-<link rel="icon" type="image/png" sizes="192x192" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAADACAMAAABaW0lVAAAAVFBMVEX///////9FRUXo6OiUlJTZ2dnX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19eSE9tAAAEXUlEQVR4nO2d63KiMBRFeQhd8nn//PllGOTYCzZ7va22Wq7sqm+gr6twFzED8pHfZJPExkJkzIxcp2hZ7XGZllZLBQJMqW9hWIFHaYFzySEVtqqDwxyF1ZtoPzDjY8qBTQUjQEdJ0JQ0BgpA7ZoU+POnTKChImqzgcibCK0DyOsEepAwqvFqQXYwi0Be1FUCbXr8vSD1Bj84ZYQrErkVciSOs0XqKUqwQX8xNfUGxBCh1YR8KqaAWwQJKX5wlwuQ6F5+7e6ElWf/QgsohR5TCR3UiuI3XqD3V5QOkiXYgzxoWjj5wviNq2JfOMb7ZlHDkqTqNkZ5C0QZ0PLCIHaeXcwN06C2zERUpm/1lAdLglmsNG56qMROh7RWzLIPVXdhCxLPT+XzBNMOnMeN89PqwLz5X27AZMgXeSioZ54d1IipWDX9V7gRq3ysBj5HMr8RhOX50nEKKZJYfq2nPKHVUQMpARiCRtNxmnOpGuYJozQb6b4COxLVGzKuSrGdw1jKYkRqrKfQzUSgqxlDo2B1mhMJ0pgDFPmvGUZTG1OLY6GE7K7Doy3hhkF7U+3ZfK6MMSe1LCJExkSHEw+37nP5qMVTn15GGq5NfQrEKCezBQuXU8YNb0i5+FcRhrU4vhnH6xH6aOgF5P+n+NQ3/i8+JEXLELUQPCNqXkqUM3yWqFpGnFCymMeODQXkujoXQq66bH7TxuG5OJQjH1+4LgsiWQ4X4apHve72EhhJYhc4qzxqG9vAZZni4ZEPJtKgYy0qxHb3A/kX73LmyERFz2y1lIEQUA+OUIzF5/F+8m4vhYVgA7aTLYQmBVuFQAxLwQ1dDe1dDT2d9dB7P5Sfzpk30A+H/6lj3C+N2EXQZKkE2LkjSd8EPW0Lj7AoQvD7PCi++s+qPfYv/GhGPN/BzZTqcu65DhqU8PzITWEQFwt0L5oXyCQvHqDrxGhMLP0QlQAAAABJRU5ErkJggg==" />
-
-<script type="application/manifest+json">
-{
-  "name": "Numeroscope – Ultimate Numerology Calculator",
-  "short_name": "Numeroscope",
-  "start_url": ".",
-  "display": "standalone",
-  "background_color": "#121212",
-  "theme_color": "#6a2dad",
-  "icons": [
-    {
-      "src": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALAAAACwCAMAAABHjh0SAAAAb1BMVEUAAAD///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////9akmBSAAAENklEQVR4nO2b2XLCIAxFHwO0Bvvaqv//5FZgiEgGmqfN6wMhFZKqQ50p2NwWiFpEb6S70LazULYkgc+gI7s3D6Ey6GzVTTbKU2k6yRGZzGzGcZo7rTJ+lNvlqTLtg4sNUJ2hHvq4+p06ld+UgBz53QjewrU04dZT4iPHs4E1qDm0MgHq2OYDqCipAn+pAyIlSpxegXoHEqLghqJfXqJTrdOB5X0oqIVHKX3UrDuk9LynQvCs6zBclOXQXNzz9D+ZT/DQvJkOj1xLdCnOuP4Ve6FQLMHgUKcd6s49/vm5vfq3fn7p85ZlE5qZ+lRQcVpDTe/t7bWQJpzRxrJr4QvtKy7PIm9iHOZpj73LKPcWGeJ5a8iFzwWtDj+JK76FFNY32GjLxh0Rs3i4iFFvR5Kv3xmJOiyb/AqRoUXvgfvsdPhqPa/8ZFLd3v9czqsl0qL2ZCu7vhKrIqZHg72Hh9n39PFl9rvsEnXcjGszmZ7x5uH7rZoYB+a3HSHX7R60OXRdJh/UHXzxskL+6VNP0mnpy+2oHOMH7YqlL/5G+H9drSz+T4DZYc6ksLxlJAAAAAElFTkSuQmCC",
-      "sizes": "180x180",
-      "type": "image/png"
+  <style>
+    /* Reset and base */
+    * {
+      box-sizing: border-box;
     }
-  ]
-}
-</script>
+    body {
+      margin: 0; padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #7b2ff7, #f107a3);
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 1rem;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 2rem;
+      max-width: 600px;
+    }
+    header h1 {
+      font-weight: 900;
+      font-size: 2.5rem;
+      text-shadow: 0 3px 10px rgba(0,0,0,0.3);
+      margin: 0;
+    }
+    .toggle-darkmode {
+      margin-top: 1rem;
+      background: rgba(255 255 255 / 0.25);
+      border: none;
+      color: white;
+      padding: 0.6rem 1.2rem;
+      font-weight: 700;
+      border-radius: 30px;
+      cursor: pointer;
+      font-size: 1rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      transition: background 0.3s ease;
+    }
+    .toggle-darkmode:hover {
+      background: rgba(255 255 255 / 0.45);
+    }
+    select {
+      border-radius: 10px;
+      border: none;
+      padding: 0.5rem 1rem;
+      font-size: 1.1rem;
+      font-weight: 600;
+      background: rgba(255 255 255 / 0.3);
+      color: #fff;
+      outline: none;
+      box-shadow: 0 0 8px rgba(255 255 255 / 0.4);
+      cursor: pointer;
+      margin-bottom: 2rem;
+      max-width: 250px;
+      width: 100%;
+      transition: background-color 0.3s ease;
+    }
+    select:focus {
+      background: rgba(255 255 255 / 0.6);
+      color: #111;
+    }
 
-<style>
-  /* Reset */
-  * {
-    box-sizing: border-box;
-  }
-  body {
-    margin: 0; padding: 1rem;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: var(--bg);
-    color: var(--text);
-    transition: background-color 0.3s ease, color 0.3s ease;
-  }
-
-  :root {
-    --bg: #fff;
-    --text: #222;
-    --primary: #6a2dad;
-    --input-bg: #f0f0f0;
-    --input-border: #ccc;
-    --button-bg: #6a2dad;
-    --button-text: #fff;
-  }
-  [data-theme="dark"] {
-    --bg: #121212;
-    --text: #ddd;
-    --input-bg: #1e1e1e;
-    --input-border: #444;
-    --button-bg: #9a6aff;
-    --button-text: #121212;
-  }
-
-  header {
-    text-align: center;
-    margin-bottom: 1rem;
-  }
-
-  h1 {
-    margin-bottom: 0.25rem;
-  }
-
-  .toggle-darkmode {
-    cursor: pointer;
-    background-color: var(--button-bg);
-    color: var(--button-text);
-    border: none;
-    padding: 0.5rem 1rem;
-    font-size: 1rem;
-    border-radius: 4px;
-  }
-
-  label {
-    display: block;
-    margin-top: 0.5rem;
-    font-weight: bold;
-  }
-
-  input, select, textarea {
-    width: 100%;
-    padding: 0.5rem;
-    margin-top: 0.25rem;
-    border: 1px solid var(--input-border);
-    border-radius: 4px;
-    background-color: var(--input-bg);
-    color: var(--text);
-    font-size: 1rem;
-  }
-
-  textarea {
-    min-height: 150px;
-    font-family: monospace;
-    white-space: pre-wrap;
-  }
-
-  button {
-    margin-top: 0.75rem;
-    background-color: var(--button-bg);
-    color: var(--button-text);
-    border: none;
-    padding: 0.5rem 1rem;
-    font-size: 1rem;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-
-  button:hover {
-    opacity: 0.9;
-  }
-
-  .grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-  }
-
-  @media (max-width: 720px) {
+    /* Container grid */
     .grid {
-      grid-template-columns: 1fr;
+      display: grid;
+      grid-template-columns: repeat(auto-fit,minmax(320px,1fr));
+      gap: 1.8rem;
+      width: 100%;
+      max-width: 900px;
+      margin-bottom: 2rem;
     }
-  }
 
-  fieldset {
-    border: 1px solid var(--input-border);
-    border-radius: 6px;
-    padding: 1rem;
-  }
+    /* Card style for fieldsets */
+    fieldset {
+      background: rgba(255 255 255 / 0.15);
+      border: none;
+      border-radius: 20px;
+      padding: 1.5rem 1.8rem;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+      color: white;
+      transition: background-color 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+    legend {
+      font-weight: 800;
+      font-size: 1.2rem;
+      margin-bottom: 0.8rem;
+      text-shadow: 1px 1px 4px rgba(0,0,0,0.3);
+    }
+    label {
+      font-weight: 600;
+      font-size: 0.95rem;
+      user-select: none;
+    }
+    input, textarea {
+      border-radius: 12px;
+      border: none;
+      padding: 0.75rem 1rem;
+      font-size: 1rem;
+      font-weight: 600;
+      background: rgba(255 255 255 / 0.3);
+      color: #111;
+      outline: none;
+      box-shadow: inset 0 2px 6px rgba(0,0,0,0.2);
+      transition: background-color 0.3s ease;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    input::placeholder {
+      color: rgba(0,0,0,0.5);
+      font-weight: 500;
+    }
+    input:focus, textarea:focus {
+      background: rgba(255 255 255 / 0.6);
+      box-shadow: 0 0 8px #fff;
+      color: #111;
+    }
+    textarea {
+      resize: vertical;
+      min-height: 130px;
+      font-family: monospace;
+      color: #222;
+      font-weight: 700;
+    }
+    button {
+      margin-top: 0.9rem;
+      background: #fff;
+      color: #6a2dad;
+      font-weight: 900;
+      border-radius: 30px;
+      padding: 0.8rem 1.5rem;
+      font-size: 1.1rem;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 5px 12px rgba(106, 45, 173, 0.6);
+      transition: background-color 0.3s ease, color 0.3s ease;
+      align-self: flex-start;
+      user-select: none;
+    }
+    button:hover {
+      background-color: #6a2dad;
+      color: white;
+      box-shadow: 0 5px 20px rgba(106, 45, 173, 0.9);
+    }
 
-  legend {
-    font-weight: bold;
-    padding: 0 0.5rem;
-  }
-</style>
+    /* Results section */
+    section.results {
+      max-width: 900px;
+      width: 100%;
+      background: rgba(255 255 255 / 0.15);
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+      padding: 1.5rem 2rem;
+      margin-bottom: 3rem;
+    }
+    section.results label {
+      font-weight: 800;
+      font-size: 1.3rem;
+      color: white;
+      margin-bottom: 0.8rem;
+      display: block;
+      text-shadow: 1px 1px 5px rgba(0,0,0,0.3);
+      user-select: none;
+    }
+    textarea#results {
+      width: 100%;
+      border-radius: 12px;
+      border: none;
+      padding: 1rem;
+      min-height: 200px;
+      font-family: monospace;
+      font-size: 1rem;
+      color: #111;
+      resize: vertical;
+      background: rgba(255 255 255 / 0.9);
+      box-shadow: inset 0 4px 12px rgba(0,0,0,0.2);
+      user-select: text;
+    }
+
+    /* Dark theme support */
+    [data-theme="dark"] {
+      background: linear-gradient(135deg, #120136, #035aa6);
+      color: #ddd;
+    }
+    [data-theme="dark"] fieldset {
+      background: rgba(0,0,0,0.3);
+      color: #ddd;
+      box-shadow: 0 8px 30px rgba(3, 90, 166, 0.5);
+    }
+    [data-theme="dark"] input, [data-theme="dark"] textarea {
+      background: rgba(0,0,0,0.6);
+      color: #eee;
+      box-shadow: inset 0 2px 8px rgba(3, 90, 166, 0.7);
+    }
+    [data-theme="dark"] input::placeholder {
+      color: rgba(255,255,255,0.6);
+    }
+    [data-theme="dark"] button {
+      background: #035aa6;
+      color: white;
+      box-shadow: 0 5px 15px rgba(3, 90, 166, 0.8);
+    }
+    [data-theme="dark"] button:hover {
+      background: #0a80d1;
+      box-shadow: 0 5px 25px rgba(10, 128, 209, 1);
+    }
+    [data-theme="dark"] section.results {
+      background: rgba(0,0,0,0.4);
+      box-shadow: 0 8px 30px rgba(3, 90, 166, 0.8);
+    }
+    [data-theme="dark"] textarea#results {
+      background: rgba(3, 90, 166, 0.9);
+      color: #fff;
+      box-shadow: inset 0 4px 12px rgba(0,0,0,0.7);
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 0.8rem;
+      }
+      header h1 {
+        font-size: 1.9rem;
+      }
+      button {
+        font-size: 1rem;
+        padding: 0.7rem 1.2rem;
+      }
+    }
+  </style>
 </head>
 <body>
 
-<header>
-  <h1>Numeroscope – Ultimate Numerology Calculator</h1>
-  <button class="toggle-darkmode" aria-pressed="false" id="darkModeToggle">Toggle Dark Mode</button>
-</header>
+  <header>
+    <h1>Numeroscope – Ultimate Numerology Calculator</h1>
+    <button class="toggle-darkmode" aria-pressed="false" id="darkModeToggle" aria-label="Toggle dark mode">Toggle Dark Mode</button>
+  </header>
 
-<section>
-  <label for="numerologySystem">Choose Numerology System:</label>
-  <select id="numerologySystem" aria-label="Numerology System">
-    <option value="p" selected>Pythagorean</option>
-    <option value="c">Chaldean</option>
+  <select id="numerologySystem" aria-label="Choose Numerology System">
+    <option value="p" selected>Pythagorean System</option>
+    <option value="c">Chaldean System</option>
   </select>
-</section>
 
-<div class="grid">
+  <div class="grid">
 
-  <fieldset>
-    <legend>Full Name Calculator</legend>
-    <label for="fullName">Full Name:</label>
-    <input id="fullName" type="text" placeholder="Enter full name" aria-describedby="fullNameHelp" />
-    <label for="birthDate">Birthdate (optional):</label>
-    <input id="birthDate" type="date" aria-describedby="birthDateHelp" />
-    <button id="calcNameBtn">Calculate</button>
-  </fieldset>
+    <fieldset>
+      <legend>Full Name Calculator</legend>
+      <label for="fullName">Full Name:</label>
+      <input id="fullName" type="text" placeholder="Enter full name" aria-describedby="fullNameDesc" />
+      <label for="birthDate">Birthdate (optional):</label>
+      <input id="birthDate" type="date" aria-describedby="birthDateDesc" />
+      <button id="calcNameBtn" aria-label="Calculate Full Name Numerology">Calculate</button>
+    </fieldset>
 
-  <fieldset>
-    <legend>Mobile Number Numerology</legend>
-    <label for="mobileNumber">Mobile Number:</label>
-    <input id="mobileNumber" type="tel" placeholder="Enter mobile number" />
-    <button id="calcMobileBtn">Calculate</button>
-  </fieldset>
+    <fieldset>
+      <legend>Mobile Number Numerology</legend>
+      <label for="mobileNumber">Mobile Number:</label>
+      <input id="mobileNumber" type="text" placeholder="Enter mobile number" />
+      <button id="calcMobileBtn" aria-label="Calculate Mobile Number Numerology">Calculate</button>
+    </fieldset>
 
-  <fieldset>
-    <legend>Angle / Repeating Numbers Analyzer</legend>
-    <label for="angleNumber">Angle Number (e.g., 11:11, 222):</label>
-    <input id="angleNumber" type="text" placeholder="Enter angle number" />
-    <button id="calcAngleBtn">Analyze</button>
-  </fieldset>
+    <fieldset>
+      <legend>Angle/Repeating Numbers Analyzer</legend>
+      <label for="angleNumber">Number (e.g., 11:11, 2222):</label>
+      <input id="angleNumber" type="text" placeholder="Enter angle/repeating number" />
+      <button id="calcAngleBtn" aria-label="Analyze Angle or Repeating Number">Analyze</button>
+    </fieldset>
 
-  <fieldset>
-    <legend>License Plate Number Reading</legend>
-    <label for="licensePlate">License Plate Number:</label>
-    <input id="licensePlate" type="text" placeholder="Enter license plate number" />
-    <button id="calcLicenseBtn">Analyze</button>
-  </fieldset>
+    <fieldset>
+      <legend>License Plate Number Reading</legend>
+      <label for="licensePlate">License Plate Number:</label>
+      <input id="licensePlate" type="text" placeholder="Enter license plate number" />
+      <button id="calcLicenseBtn" aria-label="Analyze License Plate Number">Analyze</button>
+    </fieldset>
 
-  <fieldset>
-    <legend>Product Serial Number Analyzer</legend>
-    <label for="productSerial">Product Serial Number:</label>
-    <input id="productSerial" type="text" placeholder="Enter product serial number" />
-    <button id="calcProductBtn">Analyze</button>
-  </fieldset>
+    <fieldset>
+      <legend>Product Serial Number Analyzer</legend>
+      <label for="productSerial">Product Serial Number:</label>
+      <input id="productSerial" type="text" placeholder="Enter product serial number" />
+      <button id="calcProductBtn" aria-label="Analyze Product Serial Number">Analyze</button>
+    </fieldset>
 
-  <fieldset>
-    <legend>Name Change Evaluator</legend>
-    <label for="originalName">Original Name:</label>
-    <input id="originalName" type="text" placeholder="Original name" />
-    <label for="testName">New Name:</label>
-    <input id="testName" type="text" placeholder="Test new name spelling" />
-    <button id="calcNameChangeBtn">Evaluate</button>
-  </fieldset>
+    <fieldset>
+      <legend>Name Change Evaluator</legend>
+      <label for="originalName">Original Name:</label>
+      <input id="originalName" type="text" placeholder="Enter original name" />
+      <label for="testName">Test New Name:</label>
+      <input id="testName" type="text" placeholder="Enter new name" />
+      <button id="calcNameChangeBtn" aria-label="Evaluate Name Change">Evaluate</button>
+    </fieldset>
 
-  <fieldset>
-    <legend>Name Vibration Checker</legend>
-    <label for="vibrationName">Name:</label>
-    <input id="vibrationName" type="text" placeholder="Enter name" />
-    <button id="calcVibrationBtn">Check Vibration</button>
-  </fieldset>
+    <fieldset>
+      <legend>Name Vibration Checker</legend>
+      <label for="vibrationName">Name:</label>
+      <input id="vibrationName" type="text" placeholder="Enter name" />
+      <button id="calcVibrationBtn" aria-label="Check Name Vibration">Check</button>
+    </fieldset>
 
-  <fieldset>
-    <legend>Business/Product Name Checker</legend>
-    <label for="businessName">Business/Product Name:</label>
-    <input id="businessName" type="text" placeholder="Enter business or product name" />
-    <button id="calcBusinessBtn">Check Name</button>
-  </fieldset>
+    <fieldset>
+      <legend>Business/Product Name Checker</legend>
+      <label for="businessName">Business/Product Name:</label>
+      <input id="businessName" type="text" placeholder="Enter business or product name" />
+      <button id="calcBusinessBtn" aria-label="Check Business/Product Name">Check</button>
+    </fieldset>
 
-</div>
+  </div>
 
-<section>
-  <label for="results">Analysis Report:</label>
-  <textarea id="results" readonly aria-live="polite" aria-label="Analysis Report"></textarea>
-</section>
+  <section class="results" aria-live="polite" aria-atomic="true">
+    <label for="results">Numerology Report Analysis</label>
+    <textarea id="results" readonly aria-readonly="true" aria-label="Numerology analysis results"></textarea>
+  </section>
 
 <script>
-  // Dark Mode Toggle
-  const toggleBtn = document.getElementById('darkModeToggle');
-  toggleBtn.addEventListener('click', () => {
-    const currentTheme = document.documentElement.getAttribute('data-theme');
-    if (currentTheme === 'dark') {
-      document.documentElement.removeAttribute('data-theme');
-      toggleBtn.setAttribute('aria-pressed', 'false');
+  // Dark mode toggle logic
+  const body = document.body;
+  const toggle = document.getElementById('darkModeToggle');
+
+  // Check saved preference
+  if (localStorage.getItem('theme') === 'dark') {
+    body.setAttribute('data-theme', 'dark');
+    toggle.setAttribute('aria-pressed', 'true');
+  }
+
+  toggle.addEventListener('click', () => {
+    if (body.getAttribute('data-theme') === 'dark') {
+      body.removeAttribute('data-theme');
+      localStorage.setItem('theme', 'light');
+      toggle.setAttribute('aria-pressed', 'false');
     } else {
-      document.documentElement.setAttribute('data-theme', 'dark');
-      toggleBtn.setAttribute('aria-pressed', 'true');
+      body.setAttribute('data-theme', 'dark');
+      localStorage.setItem('theme', 'dark');
+      toggle.setAttribute('aria-pressed', 'true');
     }
   });
 
-  // Numerology Maps
+  // Numerology maps
   const pythagoreanMap = {
     a:1,b:2,c:3,d:4,e:5,f:6,g:7,h:8,i:9,
     j:1,k:2,l:3,m:4,n:5,o:6,p:7,q:8,r:9,
@@ -260,7 +363,6 @@
     s:3,t:4,u:6,v:6,w:6,x:5,y:1,z:7
   };
 
-  // Utilities
   function sumDigits(num) {
     return num.toString().split('').reduce((a,b)=>a+Number(b),0);
   }
@@ -294,7 +396,6 @@
   }
 
   function vibrationalMeaning(num) {
-    // Simple sample meanings
     const meanings = {
       1: "Leadership, independence, new beginnings.",
       2: "Diplomacy, cooperation, balance.",
@@ -313,7 +414,6 @@
   }
 
   function analyzeAngleNumber(numStr) {
-    // Check for repeating digits or special patterns
     if (!numStr) return "No input.";
     const clean = numStr.replace(/[^0-9:]/g, '');
     if (/^(\d)\1+$/.test(clean.replace(':',''))) {
@@ -340,7 +440,7 @@
     return `Product Serial Number '${serial}' vibrational value is ${val}. Meaning: ${vibrationalMeaning(val)}`;
   }
 
-  // Event handlers for buttons
+  // Event handlers
   document.getElementById('calcNameBtn').addEventListener('click', () => {
     const name = document.getElementById('fullName').value.trim();
     const bdate = document.getElementById('birthDate').value;
