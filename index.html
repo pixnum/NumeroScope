@@ -1,210 +1,690 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Numerology Calculator</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #121212;
-      color: #fff;
-      padding: 20px;
-      max-width: 700px;
-      margin: auto;
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Numeroscope – Ultimate Numerology Calculator</title>
+<style>
+  :root {
+    --color-bg-light: #fefefe;
+    --color-text-light: #222;
+    --color-primary: #6200ee;
+    --color-accent: #03dac6;
+    --color-bg-dark: #121212;
+    --color-text-dark: #eee;
+    --color-error: #b00020;
+  }
+
+  body {
+    margin: 0;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--color-bg-light);
+    color: var(--color-text-light);
+    transition: background-color 0.3s, color 0.3s;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
+  body.dark {
+    background-color: var(--color-bg-dark);
+    color: var(--color-text-dark);
+  }
+
+  header {
+    padding: 1rem;
+    background-color: var(--color-primary);
+    color: white;
+    text-align: center;
+  }
+
+  header h1 {
+    margin: 0;
+    font-weight: 700;
+  }
+
+  main {
+    flex-grow: 1;
+    padding: 1rem;
+    max-width: 900px;
+    margin: 0 auto;
+    width: 95%;
+  }
+
+  .toggle-switch {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 1rem;
+  }
+
+  .toggle-switch label {
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .toggle-switch input[type="checkbox"] {
+    display: none;
+  }
+
+  .slider {
+    position: relative;
+    width: 50px;
+    height: 24px;
+    background-color: #ccc;
+    border-radius: 34px;
+    margin-left: 0.5rem;
+    transition: background-color 0.3s;
+  }
+
+  .slider::before {
+    content: "";
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    border-radius: 50%;
+    transition: transform 0.3s;
+  }
+
+  input[type="checkbox"]:checked + .slider {
+    background-color: var(--color-accent);
+  }
+
+  input[type="checkbox"]:checked + .slider::before {
+    transform: translateX(26px);
+  }
+
+  /* System selector */
+
+  .system-select {
+    margin-bottom: 1rem;
+  }
+
+  label {
+    font-weight: 600;
+  }
+
+  select, input[type="text"], input[type="tel"], input[type="date"] {
+    width: 100%;
+    padding: 0.5rem;
+    margin-top: 0.25rem;
+    margin-bottom: 1rem;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+  }
+
+  body.dark select, 
+  body.dark input[type="text"], 
+  body.dark input[type="tel"], 
+  body.dark input[type="date"] {
+    background-color: #222;
+    border-color: #555;
+    color: var(--color-text-dark);
+  }
+
+  button {
+    background-color: var(--color-primary);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    font-size: 1.1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-bottom: 1rem;
+  }
+
+  button:hover {
+    background-color: #4a00b0;
+  }
+
+  .results {
+    background-color: #e0e0e0;
+    padding: 1rem;
+    border-radius: 6px;
+    white-space: pre-wrap;
+    font-family: monospace;
+  }
+
+  body.dark .results {
+    background-color: #333;
+  }
+
+  /* Responsive */
+
+  @media (min-width: 600px) {
+    .form-row {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
     }
-    input, select, button {
-      width: 100%;
-      padding: 10px;
-      margin-top: 10px;
+    .form-row > * {
+      flex: 1;
     }
-    .results {
-      margin-top: 30px;
-      background-color: #1e1e1e;
-      padding: 20px;
-      border-radius: 8px;
-    }
-    .interpretation {
-      margin-top: 10px;
-      font-style: italic;
-      font-size: 0.95em;
-      color: #ddd;
-    }
-    .lo-shu-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-      margin-top: 20px;
-    }
-    .lo-shu-cell {
-      background-color: #2a2a2a;
-      padding: 15px;
-      text-align: center;
-      border-radius: 5px;
-      font-size: 1.2em;
-    }
-  </style>
+  }
+
+</style>
 </head>
 <body>
-  <h1>Numerology Calculator</h1>
-  <input type="text" id="fullname" placeholder="Your Full Name">
-  <input type="text" id="partnername" placeholder="Partner's Full Name (optional)">
-  <input type="date" id="dob">
-  <button onclick="calculateNumbers()">Calculate</button>
-  <div class="results" id="results"></div>
 
-  <script>
-    const pythagoreanMap = {
-      A:1,B:2,C:3,D:4,E:5,F:6,G:7,H:8,I:9,
-      J:1,K:2,L:3,M:4,N:5,O:6,P:7,Q:8,R:9,
-      S:1,T:2,U:3,V:4,W:5,X:6,Y:7,Z:8
-    };
+<header>
+  <h1>Numeroscope – Ultimate Numerology Calculator</h1>
+</header>
 
-    function reduceNumber(n) {
-      while (![11, 22, 33].includes(n) && n > 9) {
-        n = n.toString().split('').reduce((a,b)=>a+parseInt(b), 0);
+<div class="toggle-switch" aria-label="Toggle dark mode">
+  <label for="darkModeToggle">Dark Mode
+    <input type="checkbox" id="darkModeToggle" aria-checked="false" />
+    <span class="slider"></span>
+  </label>
+</div>
+
+<main>
+
+  <section class="system-select" aria-label="Select numerology system">
+    <label for="numerologySystem">Choose Numerology System:</label>
+    <select id="numerologySystem" aria-describedby="systemHelp">
+      <option value="p">Pythagorean (Modern)</option>
+      <option value="c">Chaldean (Ancient)</option>
+    </select>
+    <small id="systemHelp">Toggle between Chaldean and Pythagorean systems</small>
+  </section>
+
+  <section aria-label="Numerology calculator modules">
+
+    <!-- Module Tabs -->
+    <nav aria-label="Numerology Modules" style="margin-bottom:1rem;">
+      <button type="button" data-module="nameCalc" class="module-btn" aria-pressed="true">Full Name</button>
+      <button type="button" data-module="mobileNum" class="module-btn" aria-pressed="false">Mobile Number</button>
+      <button type="button" data-module="angleNum" class="module-btn" aria-pressed="false">Angle Numbers</button>
+      <button type="button" data-module="licensePlate" class="module-btn" aria-pressed="false">License Plate</button>
+      <button type="button" data-module="productSerial" class="module-btn" aria-pressed="false">Product Serial</button>
+      <button type="button" data-module="nameChange" class="module-btn" aria-pressed="false">Name Change</button>
+      <button type="button" data-module="vibrationCheck" class="module-btn" aria-pressed="false">Name Vibration</button>
+      <button type="button" data-module="businessName" class="module-btn" aria-pressed="false">Business Name</button>
+    </nav>
+
+    <form id="numerologyForm" onsubmit="return false;">
+
+      <!-- Full Name Calculator -->
+      <fieldset id="module-nameCalc" class="module-section">
+        <legend>Full Name Calculator</legend>
+        <label for="fullName">Full Name:</label>
+        <input type="text" id="fullName" name="fullName" placeholder="Enter your full name" required autocomplete="name" />
+
+        <label for="birthDate">Birthdate (optional):</label>
+        <input type="date" id="birthDate" name="birthDate" />
+
+        <button type="submit" id="calcNameBtn">Calculate</button>
+      </fieldset>
+
+      <!-- Mobile Number Numerology -->
+      <fieldset id="module-mobileNum" class="module-section" hidden>
+        <legend>Mobile Number Numerology</legend>
+        <label for="mobileNumber">Mobile Number:</label>
+        <input type="tel" id="mobileNumber" name="mobileNumber" placeholder="Enter mobile number" pattern="[0-9\s+\-]+" required autocomplete="tel" />
+
+        <button type="submit" id="calcMobileBtn">Analyze</button>
+      </fieldset>
+
+      <!-- Angle / Repeating Numbers Analyzer -->
+      <fieldset id="module-angleNum" class="module-section" hidden>
+        <legend>Angle / Repeating Numbers Analyzer</legend>
+        <label for="angleNumber">Number / Time (e.g., 11:11, 22:22, 333):</label>
+        <input type="text" id="angleNumber" name="angleNumber" placeholder="Enter repeating number" required />
+
+        <button type="submit" id="calcAngleBtn">Analyze</button>
+      </fieldset>
+
+      <!-- License Plate Number Reading -->
+      <fieldset id="module-licensePlate" class="module-section" hidden>
+        <legend>License Plate Number Reading</legend>
+        <label for="licensePlate">License Plate Number:</label>
+        <input type="text" id="licensePlate" name="licensePlate" placeholder="Enter license plate number" required />
+
+        <button type="submit" id="calcLicenseBtn">Read</button>
+      </fieldset>
+
+      <!-- Product Serial Number Analyzer -->
+      <fieldset id="module-productSerial" class="module-section" hidden>
+        <legend>Product Serial Number Analyzer</legend>
+        <label for="productSerial">Product Serial Number:</label>
+        <input type="text" id="productSerial" name="productSerial" placeholder="Enter product serial number" required />
+
+        <button type="submit" id="calcProductBtn">Analyze</button>
+      </fieldset>
+
+      <!-- Name Change Evaluator -->
+      <fieldset id="module-nameChange" class="module-section" hidden>
+        <legend>Name Change Evaluator</legend>
+        <label for="originalName">Original Name:</label>
+        <input type="text" id="originalName" name="originalName" placeholder="Enter original name" required />
+
+        <label for="testName">Test Name Variation:</label>
+        <input type="text" id="testName" name="testName" placeholder="Enter name variation" required />
+
+        <button type="submit" id="calcNameChangeBtn">Evaluate</button>
+      </fieldset>
+
+      <!-- Name Vibration Checker -->
+      <fieldset id="module-vibrationCheck" class="module-section" hidden>
+        <legend>Name Vibration Checker</legend>
+        <label for="vibrationName">Name:</label>
+        <input type="text" id="vibrationName" name="vibrationName" placeholder="Enter name" required />
+
+        <button type="submit" id="calcVibrationBtn">Check Vibration</button>
+      </fieldset>
+
+      <!-- Business/Product Name Checker -->
+      <fieldset id="module-businessName" class="module-section" hidden>
+        <legend>Business/Product Name Checker</legend>
+        <label for="businessName">Business/Product Name:</label>
+        <input type="text" id="businessName" name="businessName" placeholder="Enter business or product name" required />
+
+        <button type="submit" id="calcBusinessBtn">Validate</button>
+      </fieldset>
+
+    </form>
+
+    <section id="results" class="results" aria-live="polite" aria-atomic="true" style="margin-top:1rem;"></section>
+
+  </section>
+
+</main>
+
+<script>
+  // Dark mode toggle
+  const darkModeToggle = document.getElementById('darkModeToggle');
+  darkModeToggle.addEventListener('change', () => {
+    document.body.classList.toggle('dark', darkModeToggle.checked);
+    darkModeToggle.setAttribute('aria-checked', darkModeToggle.checked.toString());
+  });
+
+  // Module tab switching
+  const moduleButtons = document.querySelectorAll('.module-btn');
+  const moduleSections = document.querySelectorAll('.module-section');
+  const results = document.getElementById('results');
+
+  moduleButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      moduleButtons.forEach(b => {
+        b.setAttribute('aria-pressed', 'false');
+      });
+      btn.setAttribute('aria-pressed', 'true');
+
+      const target = btn.dataset.module;
+      moduleSections.forEach(section => {
+        section.hidden = section.id !== 'module-' + target;
+      });
+      results.textContent = ''; // Clear previous results
+    });
+  });
+
+  // Numerology maps for Pythagorean and Chaldean
+  const pythagoreanMap = {
+    a:1,b:2,c:3,d:4,e:5,f:6,g:7,h:8,i:9,
+    j:1,k:2,l:3,m:4,n:5,o:6,p:7,q:8,r:9,
+    s:1,t:2,u:3,v:4,w:5,x:6,y:7,z:8
+  };
+
+  const chaldeanMap = {
+    a:1,b:2,c:3,d:4,e:5,f:8,g:3,h:5,i:1,
+    j:1,k:2,l:3,m:4,n:5,o:7,p:8,q:1,r:2,
+    s:3,t:4,u:6,v:6,w:6,x:5,y:1,z:7
+  };
+
+  // Helper to get map based on system
+  function getNumerologyMap(system) {
+    return system === 'c' ? chaldeanMap : pythagoreanMap;
+  }
+
+  // Helper: Clean string - remove non letters and lowercase
+  function cleanString(str) {
+    return str.toLowerCase().replace(/[^a-z]/g, '');
+  }
+
+  // Calculate numerology number from string
+  function calculateNumber(str, system) {
+    const map = getNumerologyMap(system);
+    let sum = 0;
+    for (const ch of cleanString(str)) {
+      sum += map[ch] || 0;
+    }
+    return reduceToOneDigit(sum);
+  }
+
+  // Reduce number to one digit or master numbers 11, 22, 33
+  function reduceToOneDigit(num) {
+    if ([11,22,33].includes(num)) return num;
+    while (num > 9) {
+      num = num.toString().split('').reduce((a,b) => a + +b, 0);
+      if ([11,22,33].includes(num)) break;
+    }
+    return num;
+  }
+
+  // Detailed meanings for numbers with extended analysis
+
+  const detailedMeanings = {
+    1: {
+      title: "Number 1 – The Leader",
+      description: `Symbolizes independence, new beginnings, and leadership.
+People with this vibration are pioneers and innovators.
+They are confident, ambitious, and have strong willpower.
+Challenges include impatience and stubbornness.
+Success comes from embracing responsibility and originality.`
+    },
+    2: {
+      title: "Number 2 – The Diplomat",
+      description: `Represents balance, cooperation, and sensitivity.
+Those influenced by number 2 are peacemakers, sensitive to others’ feelings,
+and excel in partnerships and diplomacy.
+Tendency to avoid conflict may cause indecisiveness.
+Strength lies in patience, empathy, and teamwork.`
+    },
+    3: {
+      title: "Number 3 – The Creative Communicator",
+      description: `Symbolizes creativity, joy, and self-expression.
+Individuals are social, artistic, and optimistic.
+They bring enthusiasm and inspiration to others.
+Challenges include scattering energy and lack of focus.
+Harness creativity and positivity for best outcomes.`
+    },
+    4: {
+      title: "Number 4 – The Builder",
+      description: `Represents stability, order, and practicality.
+People with this vibration are disciplined, reliable, and hardworking.
+They excel at creating solid foundations and long-term success.
+Beware of rigidity and resistance to change.
+Groundedness and persistence are keys to achievement.`
+    },
+    5: {
+      title: "Number 5 – The Adventurer",
+      description: `Symbolizes freedom, change, and curiosity.
+These individuals crave excitement and new experiences.
+They are adaptable, dynamic, and open-minded.
+Challenges include inconsistency and restlessness.
+Balance freedom with responsibility to thrive.`
+    },
+    6: {
+      title: "Number 6 – The Nurturer",
+      description: `Represents responsibility, love, and harmony.
+Number 6 vibrations are caring, protective, and family-oriented.
+They often act as healers or counselors.
+Tendency to worry and take on others' problems.
+Success comes from compassionate leadership and balance.`
+    },
+    7: {
+      title: "Number 7 – The Seeker",
+      description: `Symbolizes introspection, spirituality, and wisdom.
+Those under number 7 are analytical, intuitive, and contemplative.
+They seek deeper truths and understanding.
+Can be withdrawn or aloof.
+Growth comes from trusting intuition and studying mysteries.`
+    },
+    8: {
+      title: "Number 8 – The Powerhouse",
+      description: `Represents ambition, material success, and authority.
+Individuals with 8 are goal-oriented, efficient, and business-minded.
+They attract wealth and leadership roles.
+Beware of workaholism and imbalance.
+Harness power responsibly for lasting success.`
+    },
+    9: {
+      title: "Number 9 – The Humanitarian",
+      description: `Symbolizes compassion, generosity, and idealism.
+People influenced by 9 are selfless, creative, and visionary.
+They work for the greater good and global causes.
+Challenges include emotional intensity and over-sacrifice.
+Fulfillment comes through service and artistic expression.`
+    },
+    11: {
+      title: "Master Number 11 – The Visionary",
+      description: `Highly intuitive, spiritual, and inspirational.
+Individuals with this number are natural leaders with psychic abilities.
+They bring light and inspiration to others.
+Challenges include nervous energy and high sensitivity.
+Success comes from balance and spiritual growth.`
+    },
+    22: {
+      title: "Master Number 22 – The Master Builder",
+      description: `Combines intuition with practicality to achieve great things.
+Visionaries who can manifest dreams into reality.
+Highly disciplined and organized.
+Beware of stress and perfectionism.
+They have the potential to build lasting legacies.`
+    },
+    33: {
+      title: "Master Number 33 – The Master Teacher",
+      description: `Represents compassion, blessings, and spiritual upliftment.
+They inspire and teach through love and service.
+Rare and highly spiritual vibration.
+Can carry heavy responsibilities.
+Fulfillment comes from selfless giving and healing.`
+    }
+  };
+
+  // Angle / Repeating Number detailed meanings with analysis
+  const detailedAngleMeanings = {
+    "11:11": {
+      title: "11:11 – Spiritual Gateway",
+      description: `A sign to pay attention to your thoughts and intuition.
+This number sequence is believed to be a portal for spiritual awakening.
+Often seen during moments of alignment or transition.
+Encourages mindfulness and manifestation of desires.`
+    },
+    "22:22": {
+      title: "22:22 – Manifestation Power",
+      description: `Symbolizes that your goals are aligning and coming into reality.
+Encourages practical action balanced with vision.
+A reminder to stay grounded and focused on your mission.`
+    },
+    "33:33": {
+      title: "33:33 – Master Teacher Energy",
+      description: `Calls for service, compassion, and higher teaching.
+Often indicates a time for healing and guiding others.
+Reflect on how you can uplift those around you.`
+    },
+    "111": {
+      title: "111 – New Beginnings",
+      description: `Manifestation number representing fresh starts and creation.
+Pay attention to your thoughts as they rapidly manifest.`
+    },
+    "222": {
+      title: "222 – Balance and Harmony",
+      description: `Signifies alignment and cooperation.
+Trust the process and keep faith in your path.`
+    },
+    "333": {
+      title: "333 – Support from Ascended Masters",
+      description: `Indicates spiritual guidance and encouragement.
+You are surrounded by loving energies aiding your growth.`
+    }
+  };
+
+  // Mobile number vibrational meanings (simplified)
+  const mobileNumMeanings = {
+    1: "Independent, self-motivated, leadership qualities.",
+    2: "Cooperative, sensitive, peacemaker.",
+    3: "Creative, expressive, social.",
+    4: "Stable, practical, hardworking.",
+    5: "Adventurous, freedom-loving, energetic.",
+    6: "Responsible, nurturing, protective.",
+    7: "Analytical, spiritual, introspective.",
+    8: "Ambitious, successful, authoritative.",
+    9: "Compassionate, humanitarian, idealistic.",
+    11: "Intuitive, visionary, inspirational.",
+    22: "Master builder, disciplined, practical.",
+    33: "Master teacher, compassionate, uplifting."
+  };
+
+  // Utility: get vibration meaning detailed report
+  function getVibrationMeaning(num) {
+    if (detailedMeanings[num]) {
+      return `${detailedMeanings[num].title}\n\n${detailedMeanings[num].description}`;
+    }
+    return "No detailed meaning available.";
+  }
+
+  // Utility: get angle/repeating number detailed report
+  function getAngleNumberMeaning(num) {
+    if (detailedAngleMeanings[num]) {
+      return `${detailedAngleMeanings[num].title}\n\n${detailedAngleMeanings[num].description}`;
+    }
+    return "This number sequence holds a unique personal significance. Reflect on its message in your life.";
+  }
+
+  // Calculation helpers
+
+  // Calculate number from license plate or serial (alphanumeric)
+  function calculateNumber(str, system) {
+    const map = getNumerologyMap(system);
+    let sum = 0;
+    for (const ch of str.toLowerCase()) {
+      if (/[a-z]/.test(ch)) {
+        sum += map[ch] || 0;
+      } else if (/\d/.test(ch)) {
+        sum += Number(ch);
       }
-      return n;
+    }
+    return reduceToOneDigit(sum);
+  }
+
+  // Event handlers for each module
+  document.getElementById('calcNameBtn').addEventListener('click', () => {
+    const system = document.getElementById('numerologySystem').value;
+    const fullName = document.getElementById('fullName').value.trim();
+    const birthDate = document.getElementById('birthDate').value;
+
+    if (!fullName) {
+      results.textContent = "Please enter your full name.";
+      return;
     }
 
-    function getNameValue(name, filterFn) {
-      return name.toUpperCase().replace(/[^A-Z]/g, '').split('').filter(filterFn).reduce((sum, ch) => sum + (pythagoreanMap[ch] || 0), 0);
+    const nameNumber = calculateNumber(fullName, system);
+    let output = `Full Name: ${fullName}\nNumerology Number: ${nameNumber}\n\n${getVibrationMeaning(nameNumber)}`;
+
+    if (birthDate) {
+      // Calculate birthdate sum and numerology
+      const dateDigits = birthDate.replace(/-/g, '');
+      const birthNum = reduceToOneDigit(dateDigits.split('').reduce((a,b) => a + +b, 0));
+      output += `\n\nBirthdate Numerology Number: ${birthNum}\n${getVibrationMeaning(birthNum)}`;
     }
 
-    function getInterpretation(type, number) {
-      const messages = {
-        lifePath: {
-          1: "You are a born leader..."
-        },
-        attitude: {
-          1: "An assertive first impression..."
-        },
-        maturity: {
-          1: "In maturity, you become a stronger leader..."
-        },
-        personalYear: {
-          1: "This is a year of new beginnings..."
-        },
-        expression: {
-          1: "Expression 1 indicates strong leadership skills and a pioneering spirit..."
-        },
-        soulUrge: {
-          1: "Soul Urge 1 reveals a deep desire to be independent and original..."
-        },
-        personality: {
-          1: "Personality 1 reflects a confident, assertive, and ambitious outer self..."
-        },
-        karmicLessons: {
-          4: "You may have a karmic lesson with discipline and work ethic...",
-          7: "A lesson in trust and spiritual connection may exist...",
-          8: "You are learning balance in power, control, and finances..."
-        },
-        compatibility: {
-          good: "Your name numbers are in harmony, indicating ease and support in your relationship.",
-          average: "There may be challenges, but with effort, this relationship can thrive.",
-          poor: "There are significant differences in your numerological energy. Clear communication is key."
-        }
-      };
-      return messages[type] && messages[type][number] ? messages[type][number] : "";
+    results.textContent = output;
+  });
+
+  document.getElementById('calcMobileBtn').addEventListener('click', () => {
+    const mobileNum = document.getElementById('mobileNumber').value.replace(/[^0-9]/g, '');
+    if (!mobileNum) {
+      results.textContent = "Please enter a valid mobile number.";
+      return;
+    }
+    const num = reduceToOneDigit(mobileNum.split('').reduce((a,b) => a + +b, 0));
+    const meaning = mobileNumMeanings[num] || "Unique vibration - explore deeper meanings.";
+    let output = `Mobile Number: ${mobileNum}\nNumerology Number: ${num}\n\nVibrational Meaning:\n${meaning}\n\nDetailed Analysis:\n`;
+
+    switch(num) {
+      case 1: output += "You are likely to be a natural leader with pioneering spirit. Focus on developing confidence and originality."; break;
+      case 2: output += "Your strength is in partnerships and diplomacy. Cultivate patience and empathy."; break;
+      case 3: output += "Creativity flows through you, use your talents to inspire others."; break;
+      case 4: output += "You value stability and order, your hard work will build solid foundations."; break;
+      case 5: output += "Adventure and freedom motivate you; balance your energy to avoid restlessness."; break;
+      case 6: output += "You nurture and protect loved ones, but remember to care for yourself too."; break;
+      case 7: output += "Deep thinker and seeker of truth, trust your intuition."; break;
+      case 8: output += "Ambitious and business savvy, be mindful of balancing material and spiritual goals."; break;
+      case 9: output += "Compassionate and idealistic, channel your energy toward humanitarian causes."; break;
+      case 11: output += "A spiritual visionary, embrace your sensitivity and inspiration."; break;
+      case 22: output += "Master builder energy, you can manifest large projects and dreams."; break;
+      case 33: output += "Master teacher vibration, use your compassion to uplift and heal."; break;
+      default: output += "Explore your unique vibrational qualities and how they manifest."; break;
     }
 
-    function calculateLoShu(dob) {
-      const digits = dob.replace(/-/g, '').split('');
-      const grid = Array(10).fill(0);
-      digits.forEach(d => grid[parseInt(d)]++);
-      return grid;
+    results.textContent = output;
+  });
+
+  document.getElementById('calcAngleBtn').addEventListener('click', () => {
+    const angleNum = document.getElementById('angleNumber').value.trim().replace(/\s/g, '').toUpperCase();
+    if (!angleNum) {
+      results.textContent = "Please enter a number or time.";
+      return;
     }
+    const meaning = getAngleNumberMeaning(angleNum);
+    results.textContent = `Angle / Repeating Number: ${angleNum}\n\n${meaning}`;
+  });
 
-    function renderLoShu(grid) {
-      const mapOrder = [3, 2, 1, 6, 5, 4, 9, 8, 7];
-      return `
-        <h3>Lo Shu Grid</h3>
-        <div class="lo-shu-grid">
-          ${mapOrder.map(n => `<div class="lo-shu-cell">${grid[n] || ''}</div>`).join('')}
-        </div>
-        <div class="interpretation">This grid shows how many times each number appears in your birth date. Empty cells may point to karmic lessons, while multiple digits suggest strengths. Analyze the balance to gain insight into your character and life path.</div>
-      `;
+  document.getElementById('calcLicenseBtn').addEventListener('click', () => {
+    const system = document.getElementById('numerologySystem').value;
+    const license = document.getElementById('licensePlate').value.trim();
+    if (!license) {
+      results.textContent = "Please enter a license plate number.";
+      return;
     }
+    const number = calculateNumber(license, system);
+    const meaning = getVibrationMeaning(number);
+    results.textContent = `License Plate Number: ${license}\nNumerology Number: ${number}\n\n${meaning}`;
+  });
 
-    function getKarmicLessons(dobDigits) {
-      const missing = [1,2,3,4,5,6,7,8,9].filter(n => !dobDigits.includes(n.toString()));
-      return missing;
+  document.getElementById('calcProductBtn').addEventListener('click', () => {
+    const system = document.getElementById('numerologySystem').value;
+    const serial = document.getElementById('productSerial').value.trim();
+    if (!serial) {
+      results.textContent = "Please enter a product serial number.";
+      return;
     }
+    const number = calculateNumber(serial, system);
+    const meaning = getVibrationMeaning(number);
+    results.textContent = `Product Serial Number: ${serial}\nNumerology Number: ${number}\n\n${meaning}`;
+  });
 
-    function getCompatibilityScore(name1, name2) {
-      const value1 = reduceNumber(getNameValue(name1, () => true));
-      const value2 = reduceNumber(getNameValue(name2, () => true));
-      const diff = Math.abs(value1 - value2);
-      if (diff === 0 || diff === 1) return "good";
-      if (diff <= 3) return "average";
-      return "poor";
+  document.getElementById('calcNameChangeBtn').addEventListener('click', () => {
+    const system = document.getElementById('numerologySystem').value;
+    const originalName = document.getElementById('originalName').value.trim();
+    const testName = document.getElementById('testName').value.trim();
+    if (!originalName || !testName) {
+      results.textContent = "Please enter both original and test names.";
+      return;
     }
+    const originalNum = calculateNumber(originalName, system);
+    const testNum = calculateNumber(testName, system);
 
-    function calculateNumbers() {
-      const fullName = document.getElementById("fullname").value.trim();
-      const partnerName = document.getElementById("partnername").value.trim();
-      const dob = document.getElementById("dob").value;
-      if (!fullName || !dob) return alert("Please enter your name and date of birth.");
-
-      const nameLetters = fullName.toUpperCase().replace(/[^A-Z]/g, '');
-      const vowels = ['A', 'E', 'I', 'O', 'U'];
-
-      const expressionNum = reduceNumber(getNameValue(fullName, () => true));
-      const soulUrgeNum = reduceNumber(getNameValue(fullName, l => vowels.includes(l)));
-      const personalityNum = reduceNumber(getNameValue(fullName, l => !vowels.includes(l)));
-
-      const [year, month, day] = dob.split("-").map(n => parseInt(n));
-      const birthdayNum = reduceNumber(day);
-      const attitudeNum = reduceNumber(day + month);
-      const lifePathNum = reduceNumber(year + month + day);
-      const maturityNum = reduceNumber(expressionNum + lifePathNum);
-
-      const currentYear = new Date().getFullYear();
-      const personalYear = reduceNumber(currentYear + month + day);
-
-      const results = document.getElementById("results");
-      const dobDigits = dob.replace(/-/g, '').split('');
-      const karmicLessons = getKarmicLessons(dobDigits);
-
-      let compatibility = "";
-      if (partnerName) {
-        const score = getCompatibilityScore(fullName, partnerName);
-        compatibility = `<p><strong>Compatibility:</strong> ${score}</p>
-        <div class="interpretation">${getInterpretation("compatibility", score)}</div>`;
-      }
-
-      results.innerHTML = `
-        <h3>Numerology Results</h3>
-
-        <p><strong>Expression Number:</strong> ${expressionNum}</p>
-        <div class="interpretation">${getInterpretation("expression", expressionNum)}</div>
-
-        <p><strong>Soul Urge Number:</strong> ${soulUrgeNum}</p>
-        <div class="interpretation">${getInterpretation("soulUrge", soulUrgeNum)}</div>
-
-        <p><strong>Personality Number:</strong> ${personalityNum}</p>
-        <div class="interpretation">${getInterpretation("personality", personalityNum)}</div>
-
-        <p><strong>Life Path Number:</strong> ${lifePathNum}</p>
-        <div class="interpretation">${getInterpretation("lifePath", lifePathNum)}</div>
-
-        <p><strong>Attitude Number:</strong> ${attitudeNum}</p>
-        <div class="interpretation">${getInterpretation("attitude", attitudeNum)}</div>
-
-        <p><strong>Maturity Number:</strong> ${maturityNum}</p>
-        <div class="interpretation">${getInterpretation("maturity", maturityNum)}</div>
-
-        <p><strong>Personal Year Number:</strong> ${personalYear}</p>
-        <div class="interpretation">${getInterpretation("personalYear", personalYear)}</div>
-
-        ${renderLoShu(calculateLoShu(dob))}
-
-        <p><strong>Karmic Lessons:</strong> ${karmicLessons.join(', ') || 'None'}</p>
-        ${karmicLessons.map(n => `<div class="interpretation">${getInterpretation("karmicLessons", n)}</div>`).join('')}
-
-        ${compatibility}
-      `;
+    let output = `Original Name: ${originalName} (Number: ${originalNum})\nTest Name: ${testName} (Number: ${testNum})\n\nComparison:\n`;
+    if (originalNum === testNum) {
+      output += "The name change maintains the same numerological vibration.\n";
+    } else {
+      output += `The name change alters the vibration from ${originalNum} to ${testNum}.\n`;
     }
-  </script>
+    output += `\nOriginal Meaning:\n${getVibrationMeaning(originalNum)}\n\nTest Name Meaning:\n${getVibrationMeaning(testNum)}`;
+
+    results.textContent = output;
+  });
+
+  document.getElementById('calcVibrationBtn').addEventListener('click', () => {
+    const system = document.getElementById('numerologySystem').value;
+    const name = document.getElementById('vibrationName').value.trim();
+    if (!name) {
+      results.textContent = "Please enter a name.";
+      return;
+    }
+    const num = calculateNumber(name, system);
+    const meaning = getVibrationMeaning(num);
+    results.textContent = `Name: ${name}\nNumerology Number: ${num}\n\n${meaning}`;
+  });
+
+  document.getElementById('calcBusinessBtn').addEventListener('click', () => {
+    const system = document.getElementById('numerologySystem').value;
+    const businessName = document.getElementById('businessName').value.trim();
+    if (!businessName) {
+      results.textContent = "Please enter a business or product name.";
+      return;
+    }
+    const num = calculateNumber(businessName, system);
+    const meaning = getVibrationMeaning(num);
+    results.textContent = `Business/Product Name: ${businessName}\nNumerology Number: ${num}\n\n${meaning}`;
+  });
+</script>
+
 </body>
 </html>
