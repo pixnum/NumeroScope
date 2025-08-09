@@ -1,2 +1,2 @@
-# NumPath
+# NumeroScope
 Numerology Calculator
