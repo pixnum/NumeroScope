@@ -19,15 +19,16 @@ body.dark-mode button{background:#2a2a2a; box-shadow:5px 5px 15px #1c1c1c, -5px 
 button:hover{transform:translateY(-2px);}
 .toggle-dark{margin:10px 0;padding:10px;border-radius:15px;background:#e0e0e0;box-shadow:5px 5px 15px #bebebe,-5px -5px 15px #ffffff;cursor:pointer;text-align:center;width:60%; transition:all 0.3s;}
 body.dark-mode .toggle-dark{background:#2a2a2a; box-shadow:5px 5px 15px #1c1c1c,-5px -5px 15px #333; color:#f5f5f5;}
-table{width:100%;border-collapse:collapse;margin-top:20px; box-shadow:10px 10px 30px #bebebe,-10px -10px 30px #ffffff;border-radius:15px; overflow:hidden; transition:box-shadow 0.3s;}
-body.dark-mode table{box-shadow:10px 10px 30px #111,-10px -10px 30px #222;}
+#result{width:100%; overflow-x:auto;}
+#result table { min-width:900px; border-collapse:collapse; margin-top:20px; box-shadow:10px 10px 30px #bebebe,-10px -10px 30px #ffffff;border-radius:15px; overflow:hidden; transition:box-shadow 0.3s; }
+body.dark-mode #result table{box-shadow:10px 10px 30px #111,-10px -10px 30px #222;}
 th,td{padding:10px;text-align:left;border-bottom:1px solid #ccc;vertical-align:top;}
 body.dark-mode th,body.dark-mode td{border-bottom:1px solid #444;}
 th{background:#f0f0f0;box-shadow:inset 1px 1px 2px #bebebe,inset -1px -1px 2px #ffffff;}
 body.dark-mode th{background:#2a2a2a;}
 footer{margin-top:20px; text-align:center; font-size:0.9rem; color:#888; transition:color 0.3s;}
 body.dark-mode footer{color:#bbb;}
-@media(max-width:600px){.app-frame{padding:20px;}table,th,td{font-size:0.8rem;}}
+@media(max-width:600px){.app-frame{padding:20px;}#result table,th,td{font-size:0.8rem;}}
 </style>
 </head>
 <body>
