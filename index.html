@@ -5,53 +5,42 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>NumeroScope © Manik Roy 2025</title>
 
-<!-- Favicon -->
-<link rel="icon" href="https://img.icons8.com/fluency/48/000000/numerology.png" type="image/png">
-
-<!-- Apple Touch Icon -->
-<link rel="apple-touch-icon" sizes="180x180" href="https://img.icons8.com/fluency/180/000000/numerology.png">
-
-<!-- Manifest for PWA / Add to Home Screen -->
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#e0e0e0">
-
 <style>
-* {margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;}
+/* === Neuromorphic Styles === */
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;}
 body{display:flex;justify-content:center;align-items:flex-start;min-height:100vh;background:#e0e0e0;padding:20px;transition:background 0.3s,color 0.3s;}
 body.dark-mode{background:#1c1c1c;color:#f5f5f5;}
-.app-frame{border:2px solid #bebebe; border-radius:25px; max-width:800px; width:100%; padding:30px; background:#e0e0e0; box-shadow:20px 20px 60px #bebebe,-20px -20px 60px #ffffff; display:flex; flex-direction:column; align-items:center; transition:background 0.3s, box-shadow 0.3s;}
-body.dark-mode .app-frame{background:#1c1c1c; border-color:#333; box-shadow:20px 20px 60px #111,-20px -20px 60px #222;}
-h1{margin-bottom:20px;font-size:1.8rem; text-align:center;}
-h1 img{width:40px;vertical-align:middle;margin-right:10px;}
-input, textarea, select, button{width:100%; padding:12px 15px; margin:8px 0; border-radius:15px; border:none; outline:none; font-size:1rem; background:#e0e0e0; box-shadow:inset 5px 5px 10px #bebebe, inset -5px -5px 10px #ffffff; transition:all 0.3s;}
-body.dark-mode input, body.dark-mode textarea, body.dark-mode select, body.dark-mode button{background:#2a2a2a; box-shadow: inset 5px 5px 10px #1c1c1c, inset -5px -5px 10px #333; color:#f5f5f5;}
-button{cursor:pointer;font-weight:bold;background:#e0e0e0; box-shadow:5px 5px 15px #bebebe, -5px -5px 15px #ffffff; transition:0.3s;}
-body.dark-mode button{background:#2a2a2a; box-shadow:5px 5px 15px #1c1c1c, -5px -5px 15px #333;}
+.app-frame{border:2px solid #bebebe;border-radius:25px;max-width:900px;width:100%;padding:30px;background:#e0e0e0;box-shadow:20px 20px 60px #bebebe,-20px -20px 60px #ffffff;display:flex;flex-direction:column;align-items:center;transition:background 0.3s,box-shadow 0.3s;}
+body.dark-mode .app-frame{background:#1c1c1c;border-color:#333;box-shadow:20px 20px 60px #111,-20px -20px 60px #222;}
+h1{margin-bottom:20px;font-size:1.8rem;text-align:center;}
+input,textarea,select,button{width:100%;padding:12px 15px;margin:8px 0;border-radius:15px;border:none;outline:none;font-size:1rem;background:#e0e0e0;box-shadow:inset 5px 5px 10px #bebebe, inset -5px -5px 10px #ffffff;transition:all 0.3s;}
+body.dark-mode input,body.dark-mode textarea,body.dark-mode select,body.dark-mode button{background:#2a2a2a;box-shadow:inset 5px 5px 10px #1c1c1c,inset -5px -5px 10px #333;color:#f5f5f5;}
+button{cursor:pointer;font-weight:bold;background:#e0e0e0;box-shadow:5px 5px 15px #bebebe,-5px -5px 15px #ffffff;transition:0.3s;}
+body.dark-mode button{background:#2a2a2a;box-shadow:5px 5px 15px #1c1c1c,-5px -5px 15px #333;}
 button:hover{transform:translateY(-2px);}
-.toggle-dark{margin:10px 0;padding:10px;border-radius:15px;background:#e0e0e0;box-shadow:5px 5px 15px #bebebe,-5px -5px 15px #ffffff;cursor:pointer;text-align:center;width:60%; transition:all 0.3s;}
-body.dark-mode .toggle-dark{background:#2a2a2a; box-shadow:5px 5px 15px #1c1c1c,-5px -5px 15px #333; color:#f5f5f5;}
-#result{width:100%; overflow-x:auto;}
-#result table { min-width:900px; border-collapse:collapse; margin-top:20px; box-shadow:10px 10px 30px #bebebe,-10px -10px 30px #ffffff;border-radius:15px; overflow:hidden; transition:box-shadow 0.3s; }
+.toggle-dark{margin:10px 0;padding:10px;border-radius:15px;background:#e0e0e0;box-shadow:5px 5px 15px #bebebe,-5px -5px 15px #ffffff;cursor:pointer;text-align:center;width:60%;transition:all 0.3s;}
+body.dark-mode .toggle-dark{background:#2a2a2a;box-shadow:5px 5px 15px #1c1c1c,-5px -5px 15px #333;color:#f5f5f5;}
+#result{width:100%;overflow-x:auto;}
+#result table{min-width:900px;border-collapse:collapse;margin-top:20px;box-shadow:10px 10px 30px #bebebe,-10px -10px 30px #ffffff;border-radius:15px;overflow:hidden;transition:box-shadow 0.3s;}
 body.dark-mode #result table{box-shadow:10px 10px 30px #111,-10px -10px 30px #222;}
 th,td{padding:10px;text-align:left;border-bottom:1px solid #ccc;vertical-align:top;}
 body.dark-mode th,body.dark-mode td{border-bottom:1px solid #444;}
 th{background:#f0f0f0;box-shadow:inset 1px 1px 2px #bebebe,inset -1px -1px 2px #ffffff;}
 body.dark-mode th{background:#2a2a2a;}
-footer{margin-top:20px; text-align:center; font-size:0.9rem; color:#888; transition:color 0.3s;}
+footer{margin-top:20px;text-align:center;font-size:0.9rem;color:#888;transition:color 0.3s;}
 body.dark-mode footer{color:#bbb;}
 @media(max-width:600px){.app-frame{padding:20px;}#result table,th,td{font-size:0.8rem;}}
 </style>
 </head>
 <body>
-
 <div class="app-frame">
-<h1><img src="https://img.icons8.com/fluency/48/000000/numerology.png" alt="Icon">NumeroScope</h1>
+<h1>NumeroScope</h1>
 
 <input type="text" id="fullName" placeholder="Full Name">
 <input type="date" id="birthDate" placeholder="Birth Date">
-<input type="text" id="secondName" placeholder="Optional Second Name (for Compatibility)">
+<input type="text" id="secondName" placeholder="Optional Second Name">
 <input type="date" id="secondBirthDate" placeholder="Optional Second Birth Date">
-<textarea id="inputText" rows="4" placeholder="Optional: Other inputs (comma/new line)"></textarea>
+<textarea id="inputText" rows="4" placeholder="Other inputs (comma/new line)"></textarea>
 
 <select id="system">
 <option value="pythagoras">Pythagoras</option>
@@ -59,31 +48,30 @@ body.dark-mode footer{color:#bbb;}
 </select>
 
 <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;width:100%;">
-  <button onclick="calculate()">Calculate</button>
-  <button onclick="clearAll()">Clear</button>
+<button onclick="calculate()">Calculate</button>
+<button onclick="clearAll()">Clear</button>
 </div>
 
 <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;width:100%;">
-  <button onclick="exportTXT()">Export as TXT</button>
-  <button onclick="exportPDF()">Export as PDF</button>
-  <button onclick="exportDOCX()">Export as DOCX</button>
+<button onclick="exportTXT()">Export as TXT</button>
+<button onclick="exportPDF()">Export as PDF</button>
+<button onclick="exportDOCX()">Export as DOCX</button>
 </div>
 
 <div class="toggle-dark" onclick="toggleDarkMode()">Toggle Dark Mode</div>
 <div id="result"></div>
-
 <footer>© NumeroScope 2025</footer>
 </div>
 
 <script>
-// Numerology maps
+// === Numerology Maps ===
 const pMap={A:1,B:2,C:3,D:4,E:5,F:6,G:7,H:8,I:9,J:1,K:2,L:3,M:4,N:5,O:6,P:7,Q:8,R:9,S:1,T:2,U:3,V:4,W:5,X:6,Y:7,Z:8};
 const cMap={A:1,B:2,C:3,D:4,E:5,F:8,G:3,H:5,I:1,J:1,K:2,L:3,M:4,N:5,O:7,P:8,Q:1,R:2,S:3,T:4,U:6,V:6,W:6,X:5,Y:1,Z:7};
 
-// Dark mode toggle
+// === Dark Mode ===
 function toggleDarkMode(){document.body.classList.toggle('dark-mode');}
 
-// Numerology functions
+// === Numerology Functions ===
 function sumDigits(num){while(num>9){num=num.toString().split('').reduce((a,b)=>a+parseInt(b),0);} return num;}
 function numerology(name,map){let sum=0;name=name.toUpperCase();for(let ch of name){if(/[A-Z]/.test(ch)) sum+=map[ch]; if(/\d/.test(ch)) sum+=parseInt(ch);} return sumDigits(sum);}
 function vowelNumber(name,map){return numerology(name.replace(/[^AEIOU]/gi,''),map);}
@@ -92,16 +80,15 @@ function birthdayNumber(date){if(!date) return ''; return sumDigits(parseInt(dat
 function lifePathNumber(date){if(!date) return ''; return sumDigits(date.replace(/-/g,''));}
 function compatibility(n1,n2){if(!n1||!n2) return 'Provide both names for compatibility.'; return `Compatibility between ${n1} and ${n2} is moderate to high. Shared understanding and mutual respect enhance relationship prospects.`;}
 
-// Interpretations
+// === Interpretations (~60 words) ===
 const interpretations={1:"Number 1 represents leadership, independence, and strong will. Ambitious, self-reliant, determined to achieve goals. Innovators and pioneers who prefer initiative over following. Challenges: stubbornness and impatience. Encourages confidence and self-expression, creating own path with courage and originality.",2:"Number 2 symbolizes harmony, diplomacy, and cooperation. Peacemakers, sensitive, empathetic, excel in partnerships. Patience and tact are strengths; indecisiveness a challenge. Teaches adaptability, compromise, emotional intelligence, fostering balance and teamwork.",3:"Number 3 signifies creativity, communication, optimism. Expressive, artistic, sociable, joyful outlook, inspire others. Challenges: scattered energy, inconsistency. Encourages playful creativity, connecting with others, spreading happiness.",4:"Number 4 represents stability, discipline, practicality. Hardworking, organized, dependable. Value structure and planning. Challenges: rigidity. Emphasizes perseverance, responsibility, practical solutions for tangible success.",5:"Number 5 embodies freedom, adaptability, adventure. Versatile, curious, love change. Challenges: restlessness. Encourages flexibility, resourcefulness, exploration, embracing change as opportunity for growth.",6:"Number 6 stands for responsibility, compassion, nurturing. Care deeply for others, family/community focus. Challenges: over-sacrifice. Encourages balance between duty and self-care, fostering harmony and creating stable environments.",7:"Number 7 symbolizes introspection, wisdom, spirituality. Analytical, reflective, intuitive, seek knowledge. Challenges: isolation, overthinking. Encourages inner growth, research, spiritual exploration, connecting with higher self.",8:"Number 8 represents power, ambition, material success. Determined, disciplined, goal-oriented, excel in leadership/business. Challenges: workaholism. Emphasizes financial acumen, organizational skills, achieving goals, practical application for tangible success.",9:"Number 9 embodies compassion, humanitarianism, completion. Generous, idealistic, globally aware. Challenges: over-idealism. Teaches empathy, altruism, wisdom from experience, serving humanity meaningfully."};
 
-// Guidance (~60 words)
 const careerInsights="Career & Business Guidance: Leverage your strengths for professional growth. Focus on consistent effort and applying creativity and discipline. Build networks and maintain ethical conduct. Opportunities arise from your natural talents and strategic planning. Challenges include overconfidence or indecision. Following your inner guidance and adaptability ensures long-term success.";
 const luckInsights="Luck & Opportunities: Favorable circumstances may appear unexpectedly. Being proactive and receptive to change enhances benefits. Timing, intuition, and decision-making influence outcomes. Avoid complacency. Opportunities multiply when effort, focus, and optimism align. Mindful actions and preparation amplify fortuitous events, while persistence increases probability of success.";
 const financialInsights="Financial Insights: Wise management, budgeting, and prudent investments enhance stability. Anticipate challenges and avoid impulsive decisions. Opportunities for growth come from leveraging skills, networking, and strategic planning. Long-term vision and adaptability are essential. Discipline and foresight ensure security and allow accumulation of wealth steadily and sustainably.";
 const healthInsights="Health Indicators: Pay attention to physical, mental, and emotional well-being. Balance work, rest, nutrition, and exercise. Stress management, mindfulness, and self-care are crucial. Regular check-ups, proactive lifestyle choices, and awareness of personal vulnerabilities support vitality. Maintaining equilibrium between body, mind, and lifestyle fosters long-term health and resilience.";
 
-// Calculate
+// === Calculate Function ===
 function calculate(){
     const map = document.getElementById('system').value==='chaldean'? cMap:pMap;
     const fullName=document.getElementById('fullName').value.trim();
@@ -137,7 +124,7 @@ function calculate(){
     document.getElementById('result').innerHTML=html+'</table>';
 }
 
-// Clear inputs and table
+// === Clear Inputs & Table ===
 function clearAll(){
     document.getElementById('fullName').value='';
     document.getElementById('birthDate').value='';
@@ -147,7 +134,7 @@ function clearAll(){
     document.getElementById('result').innerHTML='';
 }
 
-// Export functions
+// === Export Functions ===
 function exportTXT(){
     const table = document.getElementById('result').querySelector('table');
     if(!table){alert('No report to export.'); return;}
